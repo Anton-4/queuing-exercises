@@ -1,0 +1,187 @@
+\section{ Transform analysis M/G/1 }
+
+\subsection*{ Theory }
+
+\begin{align*}
+\text{LST of X}:X^{{\ast }}\left(s\right)E\left[e^{{-sX}}\right]&=\int _{0}^{\infty }e^{{-st}}\cdot dF\left(t\right)&& \text{-  $F\left(t\right)\rightarrow $ cdf -}\\
+&=\int _{0}^{\infty }e^{{-st}}\cdot x\left(t\right)dt&& \text{-  $x\left(t\right)\rightarrow $ density -}
+\end{align*}
+\begin{align*}
+\text{LST of X} \sim Exp \left(\eta \right):X^{{\ast }}\left(s\right)&=\frac{\eta }{\eta +s}
+\end{align*}
+\begin{align*}
+\text{PGF of Y}:Y\left(\eta \right)&=\sum _{{i=0}}^{\infty }y\left(i\right)\cdot \eta ^{i}\\
+&=\sum _{{i=0}}^{\infty }Pr\left[y=i\right]\cdot \eta ^{i}\\
+&=E\left[\eta ^{y}\right]
+\end{align*}
+load $\rho =\lambda \cdot E\left[B\right]$
+
+PGF of system content in M/G/1:
+\begin{align*}
+S\left(z\right)&=\left(1-\rho \right)\frac{B^{{\ast }}\left(\lambda \left(1-z\right)\right)\left(1-z\right)}{B^{{\ast }}\left(\lambda \left(1-z\right)\right)-z}&& \text{-  with $B^{{\ast }}\left(s\right)$ LST of service distribution -}
+\end{align*}
+LST of sojourn time:
+\begin{align*}
+D^{{\ast }}\left(s\right)&=\left(1-\rho \right)\frac{s\cdot B^{{\ast }}\left(s\right)}{s-\lambda +\lambda B^{{\ast }}\left(s\right)}
+\end{align*}
+\begin{align*}
+D&=W+B\\
+D^{{\ast }}\left(s\right)&=W^{{\ast }}\left(s\right)\cdot B^{{\ast }}\left(s\right)
+\end{align*}
+\begin{align*}
+\int _{{-\infty }}^{{+\infty }}f\left(x\right)d\left(x-x_{0}\right)\cdot dx&=f\left(x_{0}\right)&& \text{-  for deterministic distr -}
+\end{align*}
+
+\subsection*{ 1. }
+
+\subsubsection*{ a) }
+
+LST of $Exp \left(1\right)\rightarrow B_{1}^{{\ast }}\left(s\right)=\frac{1}{1+s}$, see theory\\
+LST of $B_{2}=1\rightarrow B_{2}^{{\ast }}\left(s\right)=e^{{-s\cdot 1}}$\\
+$\Rightarrow$ LST of dirac function(LST$=e^{-sc}$), because we have a r.v. with a spike in one place (1)\\
+$\rightarrow B^{{\ast }}\left(s\right)=B_{1}^{{\ast }}\left(s\right)\cdot B_{2}^{{\ast }}\left(s\right)=\frac{e^{{-s}}}{1+s}$
+
+\subsubsection*{ b) }
+
+\textbf{remember}
+
+if $X$ a r.v. :
+\begin{align*}
+E\left[X^{n}\right]&=\left(-1\right)^{n}\cdot \frac{d^{n}X^{{\ast }}\left(s\right)}{ds}\bigg\rvert_{{s=0}}
+\end{align*}
+
+\begin{align*}
+S\left(z\right)&=?\\
+\rho &=\lambda \cdot E\left[B\right]\\
+&=-\lambda \cdot \frac{dB^{{\ast }}\left(s\right)}{ds}\bigg\rvert _{{s=0}}\\
+&=-\lambda \cdot \left(\frac{e^{{-s}}\cdot \left(-1\right)\left(1+s\right)-e^{{-s}}\cdot 1}{\left(1+s\right)^{2}}\right)\bigg\rvert _{{s=0}} && \text{ - derivative $\frac{e^{{-s}}}{1+s}$ -}\\
+&=-\lambda \cdot \left(\frac{-2\cdot e^{{-s}}-s\cdot e^{{-s}}}{\left(1+s\right)^{2}}\right)\bigg\rvert _{{s=0}}\\
+&=-\lambda \cdot \frac{-2-0}{1^{2}}\\
+&=2\cdot \lambda 
+\end{align*}
+\begin{align*}
+B^{{\ast }} \left(\lambda \left(1-z\right)\right)&=\frac{e^{{-\lambda \left(1-z\right)}}}{1+\lambda \left(1-z\right)} && \text{- see  a), theory -}
+\end{align*}
+Thus
+\begin{align*}
+S\left(z\right)&=\left(1-2\cdot \lambda \right)\frac{e^{{-\lambda \left(1-z\right)}}\left(1-z\right)}{e^{{-\lambda \left(1-z\right)}}-z\left(1+\lambda -\lambda \cdot z\right)} && \text{- see theory -}
+\end{align*}
+
+\subsubsection*{ c) }
+\begin{align*}
+D^{{\ast }}\left(s\right)&=\left(1-2\cdot \lambda \right)\cdot \frac{s\cdot \frac{e^{{-s}}}{1+s}}{s-\lambda +\lambda \cdot \frac{e^{{-s}}}{1+s}} && \text{- see theory -}\\
+&=\left(1-2\cdot \lambda \right)\cdot \frac{s\cdot e^{{-s}}}{\left(s-\lambda \right)\left(1+s\right)+\lambda \cdot e^{{-s}}}
+\end{align*}
+\subsubsection*{ d) }
+\begin{align*}
+W^{{\ast }}\left(s\right)&=\frac{D^{{\ast }}\left(s\right)}{B_{1}^{{\ast }}\left(s\right)} && \text{- see theory -}\\
+&=\left(1+s\right)\cdot D^{{\ast }}\left(s\right) && \text{- see a) -}\\
+&=\left(1-2\lambda \right)\frac{\left(1+s\right)s\cdot e^{{-s}}}{\left(s-\lambda \right)\left(1+s\right)+\lambda +\lambda \cdot e^{{-s}}} && \text{- fill in from c) -}
+\end{align*}
+
+\subsection*{ 2. }
+
+\subsubsection*{ a) }
+
+\begin{align*}
+S_{{k+1}}^{D}&=S_{k}^{D}-1+C_{{k+1}}&& \text{-  if $S_{k}^{D} \neq 0,C_{{k+1}}=$ nr arrivals during service of customer k+1 -}\\
+S_{{k+1}}^{D}&=C_{{k+1}}+F_{{k+1}}&& \text{-  if $S_{k}^{D}=0,F=$ nr arrivals during set-up -}
+\end{align*}
+
+\subsubsection*{ b) }
+
+\begin{align*}
+S_{{k+1}}^{D}\left(z\right)&=E\left[z^{{S_{{k+1}}^{D}}}\right]&& \text{-  definition -}\\
+&=E\left[z^{{S_{k}^{D}-1}}\right]\cdot E\left[z^{{C_{{k+1}}}}\right]\cdot E\left[z^{{F_{{k+1}}}}\right]&& \text{-  see a) -}
+\end{align*}
+\begin{align*}
+E\left[z^{{F_{{k+1}}}}\right]&=E\left[z^{{F_{{k+1}}}}|S_{k}^{D}=0\right]\cdot Pr\left[S_{k}^{D}=0\right]+E\left[z^{{F_{{k+1}}}}|S_{k}^{D}> 0\right]Pr\left[S_{k}^{D}> 0\right]\\
+&=E\left[z^{{F_{{k+1}}}}|S_{k}^{D}=0\right]\cdot Pr\left[S_{k}^{D}=0\right]+E\left[z^0\right]Pr\left[S_{k}^{D}> 0\right] && \text{ - ?? - }\\ 
+&=E\left[z^{{F_{{k+1}}}}|S_{k}^{D}=0\right]\cdot Pr\left[S_{k}^{D}=0\right]+1 \cdot Pr\left[S_{k}^{D}> 0\right]
+\end{align*}
+\begin{align*}
+E\left[z^{{F_{{k+1}}}}|S_{k}^{D}=0\right]&=\int _{0}^{\infty }E\left[z^{{F_{{k+1}}}}|S_{k}^{D}=0,I_{{k+1}}=t\right]i\left(t\right)dt  && \text{ - ?? - }\\
+&=\int _{0}^{\infty }e^{{\lambda t\left(z-1\right)}}i\left(t\right)\cdot dt  && \text{ - ?? - }\\
+&=I^{{\ast }}\left(\lambda \left(1-z\right)\right)
+\end{align*}
+\begin{align*}
+E\left[z^{{F_{{k+1}}}}\right]&=I^{{\ast }}\left(\lambda \left(1-z\right)\right)\cdot S_{k}^{D}\left(0\right)+1\cdot \left(1-S_{k}^{D}\left(0\right)\right)\\
+&=1+S_{k}^{D}\left(0\right)\left(I^{{\ast }}\left(\lambda \left(1-z\right)\right)-1\right)
+\end{align*}
+\begin{align*}
+S_{{k+1}}^{D}\left(z\right)&=\frac{\left(1+S_{k}^{D}\left(0\right)\left(I^{{\ast }}\left(\lambda \left(1-z\right)\right)-1\right)\right)B^{{\ast }}\left(\lambda \left(1-z\right)\right)\left(S_{k}^{D}\left(z\right)+\left(z-1\right)S_{k}^{D}\left(0\right)\right)}{z}
+\end{align*}
+\begin{align*}
+S^{D}\left(z\right)&=\frac{\left(1+S^{D}\left(0\right)\left(I^{{\ast }}\left(\lambda \left(1-z\right)\right)-1\right)\right)B^{{\ast }}\left(\lambda \left(1-z\right)\right)\left(1-z\right)\cdot S^{D}\left(0\right)}{\left(1+S_{k}^{D}\left(0\right)\left(I^{{\ast }}\left(\lambda \left(1-z\right)\right)-1\right)\right)B^{{\ast }}\left(\lambda \left(1-z\right)\right)-z}
+\end{align*}
+To find $S^{D}\left(0\right)$, say $S^{D}\left(1\right)=1$ and solve to $S^{D}\left(0\right)$ using Hopital, see p 5.11
+
+\subsubsection*{ c) }
+
+\begin{align*}
+S\left(z\right)&=S^{D}\left(z\right)&& \text{-  see p 5.8-9 -}
+\end{align*}
+
+\subsubsection*{ d) }
+
+substitute $I^{{\ast }}\left(s\right)=\frac{\alpha }{\alpha +s}$
+
+\subsection*{ 3. }
+
+\subsubsection*{ a) }
+condition on whether customers arrive during vacation or not
+\begin{align*}
+E\left[z^{{S_{{k+1}}^{D}}}\right]&=E\left[z^{{S_{{k+1}}^{D}}}|S_{{k=0}}\right]Pr\left[S_{k}= 0\right]+E\left[z^{{S_{{k+1}}^{D}}}|S_{{k\neq 0}}\right]Pr\left[S_{k}\neq 0\right]
+\end{align*}
+G = nr customers arriving during server vacation after serving customer
+\begin{align*}
+E\left[z^{G}\right]&=\int_{0}^{\infty }E\left[z^{G}|S_{{k+1}}^{D}=t\right]v\left(t\right)dt\\
+G\left(z\right)&=V^{{\ast }}\left(\lambda \left(1-z\right)\right)
+\end{align*}
+\begin{align*}
+G\left(z\right)&=E\left[z^{G}|G> 0\right]\left(1-P\left[G=0\right]\right)+E\left[z^{G}|G=0\right]P\left[G=0\right]\\
+E\left[z^{G}|G> 0\right]&=\frac{G\left(z\right)-E\left[z^{0}\right]P\left[G=0\right]}{1-P\left[G=0\right]}\\
+&=\frac{G\left(z\right)-1\cdot G\left(0\right)}{1-G\left(0\right)}\\
+&=\frac{V^{{\ast }}\left(\lambda \left(1-z\right)\right)-V^{{\ast }}\left(\lambda \right)}{1-V^{{\ast }}\left(\lambda \right)}
+\end{align*}
+
+\subsection*{ 5. }
+
+PGF of X:
+\begin{align*}
+X\left(z\right)&=\sum _{{i=0}}^{\infty }x\left(i\right)\cdot z^{i}\\
+&=E\left[z^{x}\right]
+\end{align*}
+LST of X:
+\begin{align*}
+X\left(s\right)&=E\left[e^{{-sX}}\right]
+\end{align*}
+
+\subsubsection*{ a) }
+\begin{align*}
+S^{{r^{{\ast }}}}\left(s\right)&=E\left[e^{{-s \cdot S^{r}}}\right]\\
+&=E\left[e^{-s \cdot (1-\rho)S}\right] && \text{- fill in from given -}\\
+&=E\left[\left(e^{{-s\left(1-\rho \right)}}\right)^{S}\right]\\
+&=S\left(e^{{-s\left(1-\rho \right)}}\right) && \text{- $E[z^S] = S(z)$ -}\\
+&=\left(1-\rho \right)\cdot \frac{B^{{\ast }}\left(\lambda \cdot \left(1-e^{{-s\left(1-\rho \right)}}\right)\right)\left(1-e^{{-s\left(1-\rho \right)}}\right)}{B^{{\ast }}\left(\lambda \cdot \left(1-e^{{-s\left(1-\rho \right)}}\right)\right)-e^{{-s\left(1-\rho \right)}}}&& \text{- see theory -}
+\end{align*}
+
+\subsubsection*{ b) }
+\begin{align*}
+\lim _{{\rho \rightarrow 1}}S^{{r^{{\ast }}}}\left(s\right)&=\lim _{{\lambda \rightarrow \frac{1}{E\left[B\right]}}}S^{{r^{{\ast }}}}\left(s\right)\\
+&=\ldots \\
+&=\frac{2\cdot E\left[B\right]^{2}}{E\left[B^{2}\right]\cdot s+2E\left[B\right]^{2}}\\
+&=\frac{\frac{2\cdot E\left[B\right]^{2}}{E\left[B^{2}\right]}}{\frac{2\cdot E\left[B\right]^{2}}{E\left[B^{2}\right]}+s} && \text{- divide num and denom by $E[B^2]$-}\\
+\lim _{{\rho \rightarrow 1}}S^{r}\sim Exp \left(\alpha \right),\alpha &=\frac{2\cdot E\left[B\right]^{2}}{E\left[B^{2}\right]} && \text{- LST of Exp -}
+\end{align*}
+
+\subsubsection*{ c) }
+\begin{align*}
+P\left[S^{r}> x\right]&\approx e^{{-\alpha x}}&& \text{-  $Pr\left[S^{r}\le x\right]\approx 1-e^{{-\alpha \cdot x}}$ -}\\
+P\left[\left(1-\rho \right)S> x\right]&=P\left[S> \frac{x}{1-\rho }\right]\approx e^{{-\alpha \cdot x}} && \text{- fill in from given a) -}\\
+P\left[S> y\right]&\approx e^{{-\alpha \cdot y\left(1-\rho \right)}} && \text{- for $y=\frac{x}{1-\rho }, \rho \approx 1$ -}
+\end{align*}
+
+\begin{align*}
+Pr\left[S> \frac{x}{1-\rho }\right]\approx e^{{-\alpha \cdot \frac{x}{1-\rho }\cdot \left(1-\rho \right)}}&=e^{{-\alpha \cdot x}}
+\end{align*}

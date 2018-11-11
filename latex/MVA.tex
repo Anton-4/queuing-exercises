@@ -1,0 +1,230 @@
+\section{ Mean Value Analysis }
+
+\subsection*{ Theory }
+
+\textbf{M/G/1} queue
+\begin{itemize}
+\item  M: poisson arrivals, $\lambda $
+\item  G $\rightarrow$ $B\left(t\right)$ = distribution function of service times
+\item  1 server
+\end{itemize}
+
+\begin{itemize}
+\item  $b\left(t\right)$ = density function of service times
+\item  load of the system: $\rho =\lambda \cdot E\left[B\right]$
+\item  average service rate $\mu =\frac{1}{E\left[B\right]}$
+\item  stability condition: $\rho < 1$
+\item  remaining service time = $E\left[R\right]=\frac{E\left[B^{2}\right]}{2\cdot E\left[B\right]}$ = inspection paradox
+\item  $X\sim Exp \left(\mu \right)=> E\left[X\right]=\frac{1}{\mu }=> E\left[X^{2}\right]=\frac{2}{\mu ^{2}}$
+\item  sum of $r$ exponential distributions $E_{r}\sim Erlang \left(r,r\cdot \mu \right)=> E\left[X\right]=\frac{1}{\mu }$
+\end{itemize}
+
+\subsection*{ 1. }
+
+\subsubsection*{ a) }
+
+\textbf{M/D/1}:
+\begin{align*}
+E\left[R\right]&=\frac{E\left[B^{2}\right]}{2\cdot E\left[B\right]}\\
+&=\frac{B}{2} && \text{deterministic, so $E[B] = B$}
+\end{align*}
+\begin{align*}
+E\left[W\right]&=\frac{\rho }{1-\rho }\cdot E[R]\\
+&=\frac{\rho }{1-\rho }\cdot \frac{B}{2}\\
+&=\frac{\lambda \cdot B^{2}}{2\left(1-\rho \right)}&& \text{-  $\rho =\lambda \cdot B$ -}\\
+&=\frac{\lambda \cdot E\left[B\right]^{2}}{2\left(1-\rho \right)}
+\end{align*}
+
+\subsubsection*{ b) }
+
+\textbf{M/M/1}:
+\begin{align*}
+E\left[R\right]&=\frac{1}{\mu }&& \text{-  $\mu = \frac{1}{E[B]}$, memoryless so $E\left[R\right]=E\left[B\right]$ -}\\
+E\left[W\right]&=\frac{\rho }{\left(1-\rho \right)} \cdot E[R]\\
+&= \frac{\lambda }{\left(1-\rho \right) \cdot \mu^2}\\
+&=\frac{\lambda \cdot E\left[B\right]^{2}}{1-\rho }
+\end{align*}
+
+\subsubsection*{ c) }
+Erlang distribution = sum of r Exponential distributions\\
+phase = one of the r successive exponential periods of time.\\
+\textbf{M/$E_r$/1}:\\
+$o\left(i\right)=$ phase i of the service is ongoing
+\begin{align*}
+E\left[R\right]&=\sum _{{i=1}}^{r}E\left[R|o\left(i\right)\right]\cdot Pr\left[o\left(i\right)\right] &&
+\text{- sum over $R$ for all phases $\cdot$ prob of being in phase -}\\
+&=\sum _{{i=1}}^{r} (r-i+1) \cdot \frac{1}{\mu r} \cdot Pr\left[o\left(i\right)\right] &&
+\text{- phases i till r, and $\frac{1}{\mu r}$ for each -}\\
+&=\sum _{{i=1}}^{r}\frac{r-i+1}{\mu \cdot r}\cdot \frac{1}{r} &&
+\text{- $Pr\left[o\left(i\right)\right]=\frac{1}{r}$, since it is equally distributed -}
+\end{align*}
+
+\begin{align*}
+&=\frac{1}{r^{2}\cdot \mu }\sum _{i=1}^{r}\left(r-i+1\right)\\
+&=\frac{1}{r^{2}\cdot \mu }\left(\sum_{i=1}^{r} r + \sum_{i=1}^{r} 1 - \sum_{i=1}^{r} i\right)\\
+&=\frac{1}{r^{2}\cdot \mu }\cdot \left(r^{2}+r-\sum _{{i=1}}^{r}i\right)\\
+&=\frac{1}{r^{2}\cdot \mu }\cdot \left(r^{2}+r-\frac{r\left(r+1\right)}{2}\right)\\
+&=\frac{1}{r^{2}\cdot \mu }\cdot \frac{2r^{2}+2r-r^{2}-r}{2}\\
+&=\frac{1}{r^{2}\mu }\cdot \frac{r(r+1)}{2}\\
+&=\frac{r+1}{2\cdot r\cdot \mu }
+\end{align*}
+
+\begin{align*}
+E\left[W\right]&=\frac{\rho }{1-\rho }\cdot E\left[R\right]\\
+&=\frac{r+1}{r}\cdot \frac{\rho }{2\cdot \left(1-\rho \right)\cdot \mu }\\
+&=\frac{r+1}{r}\cdot \frac{\lambda \cdot E\left[B\right]^{2}}{2\cdot \left(1-\rho \right)}&& \text{-  $\rho =\lambda \cdot E\left[B\right]$, $\frac{1}{\mu }=E\left[B\right]$ -}
+\end{align*}
+
+\textbf{comparison of the three}\\
+
+\begin{itemize}
+\item  If $B=\frac{1}{\mu }$ for M/D/1: $E\left[R\right]=\frac{1}{2\cdot \mu }$
+\item  For M/M/1: $E\left[R\right]=\frac{1}{\mu }$
+\item  observe: $\frac{1}{2\cdot \mu }< \frac{1}{2\cdot \mu }+\frac{1}{2\cdot \mu \cdot r}\le \frac{1}{\mu }$
+\end{itemize}
+
+\subsection*{ 2. }
+
+\subsubsection*{ Theory }
+
+\begin{itemize}
+\item  $E[R] = \int_0^{\infty} E[R | \tilde{B} = t] \tilde{b}(t) dt$
+\item  $\tilde{B} =$random variable with $\tilde{b}$ its density
+\item  $\tilde{B} = t \rightarrow$ condition on total length of the period that includes a randomly chosen point
+\item  Relationship: $\tilde{b}(t) = \frac{t \cdot b(t)}{E[B]}$
+\end{itemize}
+
+\subsubsection*{ a) }
+
+TODO expand
+\begin{align*}
+P\left[t< R< t+dt\right]&=\int _{0}^{\infty }P\left[t< R< t+dt|\widetilde{B}=u\right]\cdot \widetilde{b}\left(u\right)du && \text{- see theory -}\\
+r(t)dt &= \int _{0}^{\infty } \frac{dt}{u}\cdot \widetilde{b}\left(u\right)du\\
+r\left(t\right)&=\int _{t}^{\infty }\frac{\widetilde{b}(u)}{u}du && \text{ - divide both sides by dt - }\\
+&=\int _{t}^{\infty }\frac{b\left(u\right)}{E\left[B\right]}du && \text{ - see theory - }\\
+&=\frac{1}{E\left[B\right]}\cdot \int _{t}^{\infty }b\left(u\right)du
+\end{align*}
+$\int _{t}^{\infty }b\left(u\right)du=P\left[B\ge t\right]$
+
+\subsubsection*{ b) }
+
+\begin{align*}
+R^{\ast} \left(s\right)&=\int _{0}^{\infty }r\left(t\right)e^{{-st}}dt&& \text{-  definition LST -}\\
+&=\frac{1}{E\left[B\right]}\cdot \int _{0}^{\infty }\int _{t}^{\infty }b\left(u\right) \cdot du \cdot e^{{-st}} \cdot dt&& \text{-  substitute r(t) from a) -}\\
+&=\frac{1}{E\left[B\right]}\cdot \int _{0}^{\infty }b\left(u\right)\int _{0}^{u}e^{{-st}} \cdot dt \cdot du && \text{- switching int limits: youtu.be/j6A44yQrGfU -}\\
+&=\frac{1}{E\left[B\right]}\cdot \int _{0}^{\infty }b\left(u\right)\left[\frac{e^{{-st}}}{s}\right]_{{t=0}}^{{t=u}}du\\
+&=\frac{1}{E\left[B\right]}\cdot \int _{0}^{\infty }b\left(u\right)\frac{1-e^{{-su}}}{s}du\\
+&=\frac{1}{E\left[B\right]}\cdot \frac{1}{s}\int _{0}^{\infty }b\left(u\right)\left(1-e^{{-su}}\right)du\\
+&=\frac{1}{E\left[B\right]}\cdot \frac{1}{s}\left(\int _{0}^{\infty }b\left(u\right)du-\int _{0}^{\infty }b\left(u\right)\left(e^{{-su}}\right)du\right)\\
+&=\frac{1}{s\cdot E\left[B\right]} \cdot \left(1-B^{{*}}\left(s\right)\right) && \text{ - def LST $B^{{*}}\left(s\right)$ - }\\
+&=\frac{1-B^{{*}}\left(s\right)}{s\cdot E\left[B\right]}
+\end{align*}
+
+\textbf{Remark:} $E\left[X^{n}\right]=\left(-1\right)^{n}\frac{d^{n}X^{{*}}\left(s\right)}{d\cdot s^{n}}\bigg\rvert_{{s=0}}$
+
+\subsubsection*{ c) }
+
+TODO expand
+
+$E\left[R^{2}\right]=\frac{E\left[B^{3}\right]}{3\cdot E\left[B\right]}$ $\rightarrow$ calculation similar to $E\left[R\right]$ below
+
+\textbf{Remark:} $E\left[R^{n}\right]=\frac{E\left[B^{\left(n+1\right)}\right]}{\left(n+1\right)\cdot E\left[B\right]}$
+
+\begin{align*}
+E\left[R\right]&=-\frac{dR^{{*}}\left(s\right)}{ds}\bigg\rvert_{{s=0}}\\
+&=-\lim _{{s\rightarrow 0}}\frac{-\frac{dB^{{*}}\left(s\right)}{ds}\cdot s-\left(1-B^{{*}}\left(s\right)\right)}{s^{2}\cdot E\left[B\right]} && \text{- $R^{\ast}(s)=\frac{1-B^{{*}}\left(s\right)}{s\cdot E\left[B\right]}$, derivative of fraction -}\\
+&=\frac{E\left[B^{2}\right]}{2\cdot E\left[B\right]}
+\end{align*}
+
+\subsection*{ 3. }
+
+\subsubsection*{ a) }
+\begin{align*}
+E\left[B\right]&=0\cdot q+\frac{1}{1-q}\cdot \left(1-q\right)\\
+&=1
+\end{align*}
+
+\subsubsection*{ b) }
+
+$\rho < 1 \Leftrightarrow \lambda \cdot E\left[B\right]< 1 \Leftrightarrow \lambda < 1$
+
+\subsubsection*{ c) }
+\begin{align*}
+E\left[R\right]&=\frac{E\left[B^{2}\right]}{2\cdot E\left[B\right]}\\
+E\left[B^{2}\right]&=0^{2}\cdot q+\left(\frac{1}{1-q}\right)^{2}\left(1-q\right)=\frac{1}{1-q}\\
+&\rightarrow E\left[R\right]=\frac{1}{2\cdot \left(1-q\right)}
+\end{align*}
+
+\subsubsection*{ d) }
+\begin{align*}
+E\left[W\right]&=\frac{\rho }{1-\rho }\cdot E\left[R\right] && \text{ - syllabus p 5.3 - }\\
+&=\frac{\lambda \cdot E\left[B\right]}{1-\lambda \cdot E\left[B\right]}\cdot E\left[R\right]\\
+&=\frac{1}{2}\cdot \frac{\lambda }{1-\lambda }\cdot \frac{1}{1-q} && \text{ - fill in from a) and c) - }
+\end{align*}
+
+\subsubsection*{ e) }
+$q\rightarrow 1?$\\
+$E\left[W\right]\rightarrow \infty \rightarrow$ based on d)\\
+$\rightarrow$ because some users will have an infinitely long service time
+
+\subsection*{ 4. }
+
+\subsubsection*{ a) }
+
+\begin{align*}
+E\left[W\right]&=E\left[\sum _{{j=1}}^{{Q_{A}}}B_{j}^{A}\right]+Pr\left[S^{A}> 0\right]\cdot E\left[R\right] && \text{ - definition p 5.2 - } \\
+E\left[B_{j}^{A}\right]&=\frac{\lambda _{1}}{\lambda _{1}+\lambda _{2}}\cdot E\left[B_{1}\right]+\frac{\lambda _{2}}{\lambda _{1}+\lambda _{2}}\cdot E\left[B_{2}\right]=E\left[B\right]\\
+E\left[R\right]&=\frac{\lambda _{1}}{\lambda _{1}+\lambda _{2}}\cdot E\left[R_{1}\right]+\frac{\lambda _{2}}{\lambda _{1}+\lambda _{2}}\cdot E\left[R_{2}\right]\\
+\rho &=\left(\lambda _{1}+\lambda _{2}\right)\cdot E\left[B\right]\\
+&=\lambda_{1} \cdot E\left[B_{1}\right]+\lambda_{2} \cdot E\left[B_{2}\right]\\
+Pr\left[S^{A}> 0\right]&=Pr\left[S> 0\right]=\rho 
+\end{align*}
+
+\subsection*{ 5. }
+
+\subsubsection*{ a) }
+
+\begin{itemize}
+\item  $\rho < 1 \Leftrightarrow \lambda \cdot E\left[c\right]\cdot E\left[B\right]< 1$
+\item  $\lambda \cdot E\left[c\right]=$ effective arrival rate, $\lambda _{{eff}}$
+\end{itemize}
+
+\subsubsection*{ b) }
+
+TODO explain ?? steps
+\begin{align*}
+E\left[W\right]&=E\left[\sum _{{j=1}}^{{Q^{A}+F}}B_{j}^{A}\right]+Pr\left[S^{A}> 0\right]\cdot E\left[R\right]
+\end{align*}
+\begin{itemize}
+\item  $B_{j}^{A}=$ service time of the j-th customer
+\item  $Q^{A}$ = queue content
+\item  $F$ = nr of arrivals before the tagged customer in the same batch
+\end{itemize}
+
+\begin{align*}
+E\left[W\right]&=E\left[Q^{A}+F\right]\cdot E\left[B^{A}\right]+Pr\left[S^{A}> 0\right]\cdot E\left[R\right] \text{ - p5.3 -}\\
+&=E\left[Q^{A}\right]\cdot E\left[B^{A}\right]+E\left[F\right]\cdot E\left[B^{A}\right]+\rho \cdot E\left[R\right]\\
+&=\lambda \cdot E\left[c\right]\cdot E\left[W\right] \cdot E\left[B^A\right]+E\left[F\right]\cdot E\left[B^{A}\right]+\rho \cdot E\left[R\right] \text{ - little $\rightarrow$ $E\left[Q\right]=\lambda \cdot E\left[c\right]\cdot E\left[W\right]$ -}\\
+&=\rho \cdot E\left[W\right]+E\left[F\right]\cdot E\left[B^{A}\right]+\rho \cdot E\left[R\right] \text{ -  $\rho = \lambda \cdot E[c] \cdot E[B]$ -}\\
+&=\frac{E\left[F\right]\cdot E\left[B^{A}\right]+\rho \cdot E\left[R\right]}{1-\rho }
+\end{align*}
+
+\begin{align*}
+E\left[R\right]&=\frac{E\left[B^{2}\right]}{2\cdot E\left[B\right]}\\
+E\left[F\right]&=\sum _{{i=1}}^{\infty }E\left[F|\widetilde{c}=i\right]\cdot Pr\left[\widetilde{c}=i\right] && \text{ - ?? - }\\
+Pr\left[\widetilde{c}=i\right]&=\frac{i\cdot Pr\left[c=i\right]}{E\left[c\right]} && \text{ - ?? - }\\
+E\left[F\right]&=\sum _{{i=1}}^{\infty }\frac{i-1}{2}\cdot i\cdot \frac{Pr\left[c=i\right]}{E\left[c\right]} && \text{ - $\frac{i-1}{2} \rightarrow$ on avg, half of others in batch are in front of you - }\\
+&=\frac{1}{2\cdot E\left[c\right]}\cdot \sum _{{i=1}}^{\infty }\left(i-1\right)i Pr\left[c=i\right]\\
+&=\frac{E\left[\left(c-1\right)c\right]}{2\cdot E\left[c\right]} && \text{ - ?? - }\\
+\end{align*}
+
+\subsubsection*{ c) }
+
+\begin{itemize}
+\item  similar to b)
+\item  or using little's law:
+\end{itemize}
+\begin{align*}
+E\left[Q\right]&=\lambda _{{eff}}\cdot E\left[W\right]\\
+&=\lambda \cdot E\left[c\right]\cdot E\left[W\right]
+\end{align*}

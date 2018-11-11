@@ -1,0 +1,411 @@
+\section{ Probability refresher }
+
+\subsection*{1.}
+
+\textbf{used formulas}
+
+mean discrete function $= E[g(X)]= \sum_{i=1}^n g(i)\cdot Pr[X=i]$
+
+\textbf{solution}
+
+N = number of students in  avg class, with N a random variable\\
+mean = $E[N]=20$\\
+\\
+for our example, a class has either 2 or 100 students
+$N-\mathcal{N}=\{2,100\}$\\
+
+\begin{align*}
+E[N]&=2\cdot Pr(N=2)+100\cdot Pr(N=100)\\
+&=2\cdot Pr(N=2)+100\cdot (1-Pr(N=2))\\
+&=100-98\cdot Pr(N=2)\\
+\end{align*}
+
+$\Rightarrow Pr(N=2)=\frac{80}{98},Pr(N=100)=\frac{18}{98}$\\
+\\
+$\widetilde{N}=$ nr students in class of randomly selected student\\
+\\
+$Pr(\widetilde{N}=100)=\frac{100\cdot Pr[N=100]}{\sum_{i}i\cdot Pr[N=i]}=\frac{18\cdot 100}{18\cdot 100+80\cdot 2}=\frac{1800}{1960}=0.918$\\
+\\
+$\Rightarrow$ Dean is right
+
+\subsection*{2.}
+
+\textbf{used formulas}
+
+\begin{align*}
+E[a\cdot X] &=a\cdot E[X]\\
+Var[X] &= E[(X-E[X])^{2}] = E[X^2] - E[X]^2\\
+E[X + Y] &= E[X] + E[Y]\\
+V,W:Var[V+W] &= Var[V]+Var[W]\text{, if independent}\\
+\end{align*}
+
+\textbf{solution}
+
+capital $c\in\mathbb{N}$
+interest first strategy: $y_{1}=c\cdot X$\\
+
+\begin{align*}
+  E[y_{1}]=E[c\cdot X]\\
+  =c\cdot E[X]
+\end{align*}
+
+\begin{align*}
+Var[y_{1}]&=Var[c\cdot X]\\
+&=E[(cX-E[cX])^{2}]\\
+&=E[(c\cdot X)^{2}]-(E[c\cdot X])^{2}\\
+&=c^2 E[X^2]-(c\cdot E[X])^{2}\\
+&=c^{2}Var[X]
+\end{align*}
+
+interest second strategy: $y_{2}=\sum_{{i=1}}^{c}X_{i}$\\
+\\
+\begin{align*}
+E[y_{2}]&=E[\sum_{{i=1}}^{c}X_{i}]\\
+&=\sum_{{i=1}}^{c}E[X_{i}]\\
+&=c\cdot E[X]\\
+\end{align*}
+\\
+\begin{align*}
+Var[y_{2}]&=Var[\sum_{{i=1}}^{c}X_{i}]\\
+&=\sum_{{i=1}}^{c}Var[X_{i}]\\
+&=c\cdot Var[X]\\
+\end{align*}
+\\
+$\Rightarrow$ the second strategy is less risky because of lower variance
+
+\subsection*{ 3. }
+
+\textbf{used formulas}
+
+\begin{align*}
+E[g(X)] &= \sum_{i=1}^n g(i)\cdot Pr[X=i]\\
+E\left[X \cdot Y\right] &= E\left[X\right]\cdot E\left[Y\right]
+\end{align*}
+\clearpage
+\textbf{solution}
+
+to prove or disprove: $E\left[\frac{A}{B}\right]=\frac{E\left[A\right]}{E\left[B\right]}$
+
+\begin{align*}
+A:A\subset \mathbb{Z}\\
+B:B\subset \mathbb{Z}\backslash\{0\}\\
+E\left[B\right]\ne 0
+\end{align*}
+
+\begin{align*}
+E\left[\frac{A}{B}\right]&=\sum_{{a\in A}}\sum_{{b\in B}}\frac{a}{b}Pr\left[A=a,B=b\right]\\
+&=\sum_{{a\in A}}\sum_{{b\in B}}\frac{a}{b}Pr\left[A=a\right]\cdot Pr\left[B=b\right]&& \text{- joint of independent vars -}
+\end{align*}
+
+\begin{align*}
+\frac{E\left[A\right]}{E\left[B\right]}&=\frac{\sum_{{a\in A}}a\cdot Pr\left[A=a\right]}{\sum_{{b\in B}}b\cdot Pr\left[B=b\right]}
+\end{align*}
+
+the above equations are clearly not equal
+
+\subsection*{4. }
+
+\textbf{used formulas}
+
+Properties exponential distribution:
+\begin{align*}
+\text{distribution function = } F\left(x\right)&=1-\exp\left(-\lambda\cdot x\right)\\
+\text{density function = } f\left(x\right)&=\frac{d}{dx}F\left(x\right)=\lambda\cdot \exp\left(-\lambda\cdot x\right)\\
+\text{mean = } E\left[X\right]&=\int_{0}^{{+\infty}}x\cdot f\left(x\right)dx=\int_{0}^{\infty}x\cdot \lambda\cdot \exp\left(-\lambda\cdot x\right)=\frac{1}{\lambda}
+\end{align*}
+
+\begin{align*}
+F\prime \left(t\right) &= \frac{F\left(t+\delta \right)-F\left(t\right)}{\delta }\\
+Pr\left[A|B\right]&=\frac{Pr\left[B|A\right]\cdot Pr\left[A\right]}{Pr\left[B\right]}\\
+&=\frac{Pr\left[A\cap B\right]}{Pr\left[B\right]}\\
+F(t) &= Pr[X \le t]
+\end{align*}
+
+property mean r.v.
+
+$Y=$ positive continuous random var $\rightarrow$ $\forall y< 0|f_{Y}\left(y\right)=0$
+\begin{align*}
+E\left[Y\right]&=\int _{0}^{\infty }yf_{Y}\left(y\right)dy&& \\\text{-  mean continuous r.v. -}
+\text{integration by parts: $\int u \cdot dv = u \cdot v - \int v \cdot du$}\\
+\text{$u = y, du = dy, dv = f_y(y)dy, v = F_y(y)-1$}\\
+&=y\left(F_{Y}\left(y\right)-1\right)\bigg\rvert _{0}^{\infty }-\int _{0}^{\infty }\left(F_{y}\left(y\right)-1\right)dy&& \\\text{- integral of density is cdf -}\\
+&=\int _{0}^{\infty }\left(1-F_{y}\left(y\right)\right)dy&& \text{-  $F_{Y}\left(\infty \right)=1$ -}
+\end{align*}
+
+\textbf{solution}
+
+\textbf{given:}
+
+distribution F(t) of the hard drive lifetime X is a mixture of exponentials:
+\begin{align*}
+F\left(t\right)&=Pr\left[X\le t\right]=p\cdot \left(1-\exp\left(-\lambda_{1}\cdot t\right)\right)+\left(1-p\right)\cdot \left(1-\exp\left(-\lambda_{2}\cdot t\right)\right)\\
+&=1-p\cdot \exp\left(-\lambda_{1}\cdot t\right)-\left(1-p\right)\cdot \exp\left(-\lambda_{2}\cdot t\right)
+\end{align*}
+The first exponential represents probability of failure during production,
+the second is prob of failure during normal use.
+
+\begin{align*}
+p&=0.1\\
+\lambda_{1}&=10\\
+\lambda_{2}&=1
+\end{align*}
+
+\subsubsection*{ a) }
+
+failure rate $=\lambda \left(t\right)=\frac{F\sp{\prime} \left(t\right)}{1-F\left(t\right)}$
+\begin{align*}
+\frac{F\sp{\prime} \left(t\right)}{1-F\left(t\right)}&=\frac{1}{1-F\left(t\right)}\cdot F\prime \left(t\right)\\
+&=\frac{1}{1-F\left(t\right)}\cdot \frac{F\left(t+\delta \right)-F\left(t\right)}{\delta }&& \text{-  formule afgeleide -}\\
+&=\frac{1}{1-Pr\left[T\le t\right]}\cdot \frac{F\left(t+\delta \right)-F\left(t\right)}{\delta }&& \text{-  $F\left(t\right)=Pr\left[T\le t\right]$ -}\\
+&=\frac{1}{Pr\left[T> t\right]}\cdot \frac{Pr\left[T\le t+\delta \right]-Pr\left[T\le t\right]}{\delta }&& \text{-  $F\left(x\right)=Pr\left[T\le x\right]$ -}\\
+&=\frac{Pr\left[t< T,T\le t+\delta \right]}{Pr\left[T> t\right]\cdot \delta }\\
+&=\frac{Pr\left[T\le t+\delta |T> t\right]}{\delta }&& \text{-  bayes rule -}
+\end{align*}
+
+$\lambda \left(t\right)$ = probability it will fail at time $t+dt$ given it has not failed until time t
+
+\subsubsection*{ b) }
+
+remaining lifetime $=X_{R}=X-t$
+
+\begin{align*}
+F_{{X_{R}}}\left(x|t\right)&=Pr\left[X_{R}\le x|X> t\right]&& \text{-  property cdf -}\\
+&=Pr\left[X-t\le x|X> t\right]&& \text{-  $X_{R}=X-t$ -}\\
+&=\frac{Pr\left[X\le x+t,X> t\right]}{Pr\left[X> t\right]}&& \text{-  bayes rule -}\\
+&=\frac{F\left(x+t\right)-F\left(t\right)}{1-F\left(t\right)}&& \text{-  property cdf -}\\
+&=\frac{F\left(x+t\right)+\left(1-F\left(t\right)\right)-1}{1-F\left(t\right)}\\
+&=1-\frac{1-F\left(x+t\right)}{1-F\left(t\right)}\\
+&=1-\frac{p\cdot \exp \left(-\lambda _{1}\cdot \left(t+x\right)\right)+\left(1-p\right)\cdot \exp \left(-\lambda _{2}\cdot \left(t+x\right)\right)}{p\cdot \exp \left(-\lambda _{1}\cdot t\right)+\left(1-p\right)\cdot \exp \left(-\lambda _{2}\cdot t\right)}&& \text{-  fill in from given -}
+\end{align*}
+
+\subsubsection*{c) }
+
+asked: mean of remaining life time =
+\begin{align*}
+E\left[X_{R}|X> t\right]&=\int _{0}^{\infty }x\cdot dF_{{X_{R}}}\left(x|t\right)\\
+&=\int _{0}^{\infty }\left(1-F_{{X_{R}}}\left(x|t\right)\right)dx&& \text{-  see property mean r.v. -}\\
+&=\ldots \\
+&=\frac{1}{\lambda _{1}\cdot \lambda _{2}}\cdot \frac{p\cdot \lambda _{2}\cdot \exp \left(-\lambda _{1}\cdot t\right)+\left(1-p\right)\cdot \lambda _{1}\cdot \exp \left(-\lambda _{2}\cdot t\right)}{p\cdot \exp \left(-\lambda _{1}\cdot t\right)+\left(1-p\right)\cdot \exp \left(-\lambda _{2}\cdot t\right)}
+\end{align*}
+
+lifetime increases when using it more (counterintuitive but true)
+
+\clearpage
+
+\subsection*{ 5. }
+
+\textbf{used formulas}
+
+\begin{align*}
+E\left[X\right]&=E\left[E\left[X|Y\right]\right]
+\end{align*}
+
+\textbf{solution}
+
+S = file size
+
+average file size =  E[S] = 6K
+
+\subsubsection*{ a) }
+\textbf{to prove:} fewer than half of the files can have size \textgreater  12K
+
+\begin{align*}
+E\left[S\right]&=E\left[E\left[S|X\right]\right]&& \text{-  property conditional expectation -}\\
+&=E\left[S|S> 12K\right]\cdot Pr\left[S> 12K\right]+E\left[S|S\le 12K\right]\cdot Pr\left[S\le 12K\right]&& \text{-  def expectation -}\\
+&=E\left[S|S> 12K\right]\cdot Pr\left[S> 12K\right]+E\left[S|S\le 12K\right]\cdot \left(1-Pr\left[S> 12K\right]\right)\\
+6K&=\left(E\left[S\right]> 12K\right)\cdot Pr\left[S> 12K\right]+0\cdot \left(1-Pr\left[S> 12K\right]\right)&& \text{-  take lower bound -}
+\end{align*}
+$\implies$ $\frac{1}{2}> Pr\left[S> 12K\right]$
+
+\subsubsection*{ b) }
+min file size is 3K, max amount of \textgreater 12K files
+\begin{align*}
+6> 12\cdot Pr\left[S> 12K\right]+3\cdot \left(1-Pr\left[S> 12K\right]\right)\\
+\frac{1}{3}> Pr\left[S> 12K\right]
+\end{align*}
+
+\subsection*{ 6. }
+
+\textbf{used formulas}
+
+\begin{align*}
+Pr\left[X+Y\le t\right] &=\int _{{-\infty }}^{{+\infty }}Pr\left[X\le t-y\right]dF_{Y}\left(y\right) && \text{- see A.1.5 -}
+\end{align*}
+
+\textbf{solution}
+
+company pays fine if processing time exceeds 7 seconds
+
+retrieving file takes time X exponentially distributed with mean 5
+
+parsing file takes time Y uniformly distributed over [1, 3]
+
+$T=X+Y> 7$
+
+\begin{align*}
+Pr\left[T> 7\right]&=1-Pr\left[T\le 7\right]\\
+&=1-F_{T}\left(7\right)&& \text{-  property cdf -}
+\end{align*}
+
+\begin{align*}
+F_{T}\left(t\right)&=Pr\left[T\le t\right]\\
+&=Pr\left[X+Y\le t\right]\\
+&=\int _{{-\infty }}^{{+\infty }}Pr\left[X\le t-y\right]dF_{Y}\left(y\right)&& \text{- see formulas -}
+\end{align*}
+$X$ is exponentially distributed, so based on table 1 at A.1.11:
+\begin{align*}
+F_{X}\left(x\right)&=1-\exp \left(-\lambda \cdot t\right)\\
+E\left[X\right]&=5=\frac{1}{\lambda }
+\end{align*}
+$Y$ is uniformly distributed, so based on table 1:
+\begin{align*}
+F_{y}\left(y\right)&=\begin{cases}
+0&y< 1\\
+\frac{1}{2}\left(y-1\right)&1\le y\le 3\\
+1&y> 3\\
+\end{cases}
+\end{align*}
+
+\begin{align*}
+f_{Y}\left(y\right)&=\begin{cases}
+0&y< 1\\
+\frac{1}{2}&1\le y\le 3\\
+0&y> 3\\
+\end{cases}
+\end{align*}
+
+We set boundaries to 1 and 3 because $f_Y(y) = 0$ everywhere else
+\begin{align*}
+F_{T}\left(t\right)&=\int _{1}^{3}F_{X}\left(t-y\right)f_{Y}\left(y\right)dy\\
+&=\int _{1}^{3}(1-e^{-\lambda \cdot \left(t-y\right)}) \frac{1}{2} dy\\
+&=\frac{1}{2} \int _{1}^{3}1-e^{-\lambda \cdot \left(t-y\right)} dy\\
+&=\frac{1}{2} \int _{1}^{3}1 - \frac{1}{2} \int _{1}^{3} e^{-\lambda \cdot \left(t-y\right)} dy\\
+&=\frac{1}{2} \cdot 2 - \frac{1}{2} \int _{1}^{3} e^{-\lambda t}\cdot e^{\lambda y} dy\\
+&= 1 - \frac{1}{2} \int _{1}^{3} e^{-\lambda t}\cdot e^{\lambda y} dy\\
+&= 1 - \frac{1}{2} e^{-\lambda t} \int _{1}^{3} e^{\lambda y} dy\\
+&= 1 - \frac{1}{2} e^{-\lambda t} \left[ -\frac{e^{\lambda y}}{\lambda} \right]_1^3\\
+&= 1 - \frac{e^{-\lambda t}}{2} \cdot \left(\frac{e^{-\lambda 3}}{\lambda} -\frac{e^{\lambda}}{\lambda}\right)\\
+&=1-\frac{e^{{-\lambda t}}}{2\cdot \lambda }\left(e^{{\lambda 3}}-e^{\lambda }\right)
+\end{align*}
+\begin{align*}
+Pr\left[T> 7\right]&=1-Pr\left[T\le 7\right]\\
+&= 1-\frac{e^{{-0.2 \cdot 7}}}{2\cdot 0.2 }\left(e^{{0.2 \cdot 3}}-e^{0.2 }\right) \\
+&=0.3703
+\end{align*}
+
+\subsection*{ 7. }
+
+if  $Pr\left[A|B\right]> Pr\left[A\right]$ , prove that:  $Pr\left[B|A\right]> Pr\left[B\right]$
+
+\begin{align*}
+Pr\left[A\right]&< Pr\left[A|B\right]\\
+Pr\left[A\right]&< \frac{Pr\left[A\cap B\right]}{Pr\left[B\right]}&& \text{-  bayes theorem -}
+\end{align*}
+\begin{align*}
+\text{assume that }Pr\left[A\right]> 0,Pr\left[B\right]> 0
+\end{align*}
+\begin{align*}
+Pr\left[B\right]&< \frac{Pr\left[A\cap B\right]}{Pr\left[A\right]}\\
+Pr\left[B\right]&< Pr\left[B|A\right]&& \text{-  bayes theorem -}
+\end{align*}
+
+\subsection*{ 8. }
+
+\textbf{used formulas}
+
+\begin{align*}
+E\left[X|Y=y\right]&=\sum _{{i=1}}^{\infty} Pr[X = i| Y = y] \cdot i\\
+\sum _{{n=1}}^{\infty}n\cdot z^{n}&=\frac{z}{\left(1-z\right)^{2}}\\
+\sum _{{n=1}}^{\infty}n^{2}z^{n} &= \frac{z\left(1+z\right)}{\left(1-z\right)^{3}}
+\end{align*}
+
+\textbf{solution}
+
+95\% good chips, 5\% bad chips\\
+good chips will fail with probability 0.0001 each day\\
+bad chips will fail with probability 0.01 each day\\
+time until chip fails =  T\\
+compute $E\left[T\right]$ and $var\left[T\right]$
+
+state of random chip =  $S=\{g,b\}$
+\begin{align*}
+Pr\left[S=g\right]&=0.95\\
+Pr\left[S=b\right]&=0.05\\
+Pr\left[fail|S=g\right]&=0.0001=p_{g}\\
+Pr\left[fail|S=b\right]&=0.01=p_{b}
+\end{align*}
+
+\begin{align*}
+E\left[T\right]&=E\left[E\left[T|S\right]\right]=Pr\left[S=g\right]\cdot E\left[T|S=g\right]+Pr\left[S=b\right]\cdot E\left[T|S=b\right]
+\end{align*}
+
+\begin{align*}
+Pr\left[T=1|S=g\right]&=0.0001\\
+Pr\left[T=2|S=g\right]&=\left(1-Pr\left[fail|S=g\right]\right)\cdot Pr\left[fail|S=g\right]\\
+Pr\left[T=n|S=g\right]&=\left(1-Pr\left[fail|S=g\right]\right)^{\left(n-1\right)}\cdot Pr\left[fail|S=g\right]\\
+&=\left(1-p_{g}\right)^{\left(n-1\right)}\cdot p_{g}
+\end{align*}
+
+\begin{align*}
+E\left[T|S=g\right]&=\sum _{{n=1}}^{\infty}\left(1-p_{g}\right)^{\left(n-1\right)}\cdot p_{g}\cdot n && \text{multiplied by n because we want to sum time, not probabilities}
+\end{align*}
+
+\begin{align*}
+E\left[T|S=g\right]&=\sum _{{n=1}}^{\infty}\left(1-p_{g}\right)^{{n-1}}\cdot p_{g}\cdot n\\
+&=\frac{p_{g}}{1-p_{g}}\cdot \sum _{{n=1}}^{\infty}n\cdot \left(1-p_{g}\right)^{n} \text{-  prop geom series -}\\ 
+&=\frac{p_{g}}{1-p_{g}}\cdot \frac{1-p_{g}}{p_{g}^{2}}\\
+&=\frac{1}{p_g}
+\end{align*}
+\begin{align*}
+E\left[T|S=b\right]&=\frac{1}{p_{b}}
+\end{align*}
+
+$=> E\left[T\right]=0.95\cdot \frac{1}{p_{g}}+0.05\cdot \frac{1}{p_{b}}=9505$ days
+
+\begin{align*}
+Var\left[T\right]&=E\left[\left(T-E\left(T\right)\right)^{2}\right]\\
+&=E\left[T^{2}\right]-\left(E\left[T\right]\right)^{2}
+\end{align*}
+\begin{align*}
+E\left[T^{2}\right]&=E\left[T^{2}|S=g\right]\cdot Pr\left[S=g\right]+E\left[T^{2}|S=b\right]\cdot Pr\left[S=b\right]
+\end{align*}
+
+
+\begin{align*}
+Pr\left[T^{2}=1|S=g\right]&=Pr\left[T=1|S=g\right]=p_{g}\\
+Pr\left[T^{2}=4|S=g\right]&=Pr\left[T=2|S=g\right]=\left(1-p_{g}\right)p_{g}\\
+Pr\left[T^{2}=n^{2}|S=g\right]&=Pr\left[T=n|S=g\right]=\left(1-p_{g}\right)^{\left(n-1\right)}\cdot p_{g}
+\end{align*}
+\begin{align*}
+E\left[T^{2}|S=g\right]&=\sum _{{n=1}}^{\infty }n^{2}\left(1-p_{g}\right)^{\left(n-1\right)}p_{g}\\
+&=\frac{p_{g}}{1-p_{g}}\cdot \sum _{{n=1}}^{\infty }n^{2}\left(1-p_{g}\right)^{n}\\
+&=\frac{p_{g}}{1-p_{g}}\cdot \frac{\left(1-p_{g}\right)\left(2-p_{g}\right)}{p_{g}^{3}}&& \text{-  see formulas -}\\
+&=\frac{2-p_{g}}{p_{g}^{2}}
+\end{align*}
+
+\begin{align*}
+E\left[T^{2}\right]&=0.95\cdot \frac{2-p_{g}}{p_{g}^{2}}+0.05\frac{2-p_{b}}{p_{b}^{2}}
+\end{align*}
+
+\begin{align*}
+Var\left[T\right] &= E\left[T^{2}\right]-\left(E\left[T\right]\right)^{2}\\
+&= 0.95\cdot \frac{2-p_{g}}{p_{g}^{2}}+0.05\frac{2-p_{b}}{p_{b}^{2}} - 9505^2\\
+&= 99,646,470 \\
+std &= 9982.3 \text{ days}
+\end{align*}
+
+properties geometric series:
+\begin{align*}
+\sum _{{n=0}}^{\infty}z^{n}&=\frac{1}{1-z}&& \text{-  if $|z|< 1$ -}\\
+\sum _{{n=1}}^{\infty}n\cdot z^{n}&=z\cdot \sum _{{n=1}}^{\infty}n\cdot z^{{n-1}}=z\sum _{{n=1}}^{\infty}\frac{d}{dz}z^{n}=z\frac{d}{dz}\left(\sum _{{n=0}}^{\infty}z^{n}\right)\\
+&=z\cdot \frac{d}{dz}\left(\frac{1}{1-z}\right)=z\cdot \frac{\left(-1\right)^{2}}{\left(1-z\right)^{2}}=\frac{z}{\left(1-z\right)^{2}}
+\end{align*}
+\begin{align*}
+\sum _{{n=1}}^{\infty}n^{2}z^{n}&=z\cdot \sum _{{n=1}}^{\infty}n^{2}z^{\left(n-1\right)}\\
+&=z\cdot \sum _{{n=1}}^{\infty}\frac{d}{dz}\left(n\cdot z^{n}\right)\\
+&=z\cdot \frac{d}{dz}\left(\sum _{{n=0}}^{\infty}n\cdot z^{n}\right)\\
+&=z\cdot \frac{\left(1-z\right)^{2}+2\cdot \left(1-z\right)\left(-1\right)}{\left(1-z\right)^{4}}\\
+&=\frac{z\left(1+z\right)}{\left(1-z\right)^{3}}
+\end{align*}
+
+\clearpage

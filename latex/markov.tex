@@ -1,0 +1,261 @@
+\section{Markov chains}
+
+\subsection*{ 1. }
+
+$p_{{i,j}}=Pr\left[W_{{n+1}}=j|W_{n}=i\right]$
+
+webpages =  $W=\{1,2,3\}$
+
+\begin{tikzpicture}
+        \node[state]             (0) {3 \textbar 2, 3};
+        \node[state, right=of 0] (1) {2 \textbar 2, 3};
+        \node[state, right=of 1] (2) {1 \textbar 1, 3};
+        \node[state, right=of 2] (3) {3 \textbar 1, 3};
+        \node[state, left=of 0] (4) {2 \textbar 1, 2};
+        \node[state, left=of 4] (5) {1 \textbar 1, 2};
+
+        \draw[every loop]
+            (0) edge[bend right, auto=right]  node {1} (1)
+            (1) edge[bend right, auto=right] node {$1 - y$} (0)
+            (1) edge[bend right, auto=right, above]  node {$y$} (2)
+            (2) edge[bend right, auto=right] node {$x$} (1)
+            (2) edge[bend right, auto=right, above]  node {$1-x$} (3)
+            (3) edge[bend left=45, auto=right, below] node {$1$} (1)
+            (4) edge[bend right, auto=right]  node {$y$} (5)
+            (4) edge[bend right, auto=right, above]  node {$1 - y$} (0)
+            (5) edge[bend right, auto=right, above] node {$x$} (4)
+            (5) edge[bend right, auto=right] node {$1 - x$} (0)
+            ;
+\end{tikzpicture}
+
+proportion of time cache contains pages $k+l=t_{{k,l}}$
+
+\textbf{Ergodic?}
+\begin{itemize}
+\item  finite state space W? $\rightarrow$ yes
+\item  gcd\{2,3,4,5,...\} = 1 for all sates $\rightarrow$  aperiodic
+\item  irriducible? - yes
+\item \textgreater  Markov chain is ergodic  $\rightarrow$  limiting distribution = stationary distribution
+\end{itemize}
+
+transient state = time spent in state is 0 in the long run
+
+$t_{{1,2}}=0$, since it is a transient state
+
+transient states can be removed, stationary equations:
+
+\begin{align*}
+\pi _{{\left(3,2,3\right)}}&=\pi _{{\left(2,2,3\right)}}\cdot \left(1-y\right)\\
+\pi _{{\left(2,2,3\right)}}&=\pi _{{\left(3,2,3\right)}}+\pi _{{\left(3,1,3\right)}}+x\cdot \pi _{{1,1,3}}\\
+\pi _{{\left(1,1,3\right)}}&=y\cdot \pi _{{\left(2,2,3\right)}}\\
+\pi _{{\left(3,1,3\right)}}&=\left(1-x\right)\cdot \pi _{{\left(1,1,3\right)}}
+\end{align*}
+
+simplified:
+
+\begin{align*}
+\pi _{{\left(3,1,3\right)}}&=\left(1-x\right)\cdot y\cdot \pi _{{\left(2,2,3\right)}}\\
+\pi _{{\left(3,2,3\right)}}&=\pi _{{\left(2,2,3\right)}}\cdot \left(1-y\right)\\
+\pi _{{\left(1,1,3\right)}}&=y\cdot \pi _{{\left(2,2,3\right)}}\\
+1&=\pi _{{\left(3,1,3\right)}}+\pi _{{\left(3,2,3\right)}}+\pi _{{\left(1,1,3\right)}}+\pi _{{\left(2,2,3\right)}}&& \text{-  normalization condition -}
+\end{align*}
+
+\begin{align*}
+1 &= \left(1-x\right)\cdot y\cdot \pi _{{\left(2,2,3\right)}}+\left(1-y\right)\cdot \pi _{{\left(2,2,3\right)}}+y\cdot \pi _{{\left(2,2,3\right)}}+\pi _{{\left(2,2,3\right)}}\\
+1 &= \left(y-xy+1-y+y+1\right)\cdot \pi _{{\left(2,2,3\right)}}\\
+\pi _{{\left(2,2,3\right)}}&=\frac{1}{y-xy+2}\\
+\pi _{{\left(3,1,3\right)}}&=\frac{\left(1-x\right)\cdot y}{y-xy+2}\\
+\pi _{{\left(3,2,3\right)}}&=\frac{1-y}{y-xy+2}\\
+\pi _{{\left(1,1,3\right)}}&=\frac{y}{y-xy+2}
+\end{align*}
+
+\begin{align*}
+t_{{2,3}}&=\pi _{{\left(2,2,3\right)}}+\pi _{{\left(3,2,3\right)}}\\
+&=\frac{2-y}{y-xy+2}
+\end{align*}
+
+\begin{align*}
+t_{{1,3}}&=\pi _{{\left(3,1,3\right)}}+\pi _{{\left(1,1,3\right)}}\\
+&=\frac{2y-xy}{y-xy+2}
+\end{align*}
+
+\subsubsection*{ b) }
+
+proportion of requests for cached pages\\
+$p_{{i,j}}=$ prob that we will ask for $j$ given that $i$ is current page
+
+\begin{align*}
+\pi _{{\left(2,2,3\right)}}\cdot p_{{2,3}}+\pi _{{\left(3,1,3\right)}}\cdot p_{{3,1}}+\pi _{{\left(3,2,3\right)}}\cdot p_{{3,2}}+\pi _{{\left(1,1,3\right)}}\cdot p_{{1,3}}\\
+\pi _{{\left(2,2,3\right)}}\cdot \left(1-y\right)+\pi _{{\left(3,1,3\right)}}\cdot 0+\pi _{{\left(3,2,3\right)}}\cdot 1+\pi _{{\left(1,1,3\right)}}\cdot \left(1-x\right) &= \frac{y\left(1-x\right)}{2+y-xy}
+\end{align*}
+
+\subsection*{ 2. }
+
+\subsubsection*{ a) }
+
+state space =  $E=\{1,0_{H,}0_{S}\}H$ for hardware, $S$ for software\\
+we assume software and hardware problems cannot occur simultaneously
+
+\begin{tikzpicture}
+        \node[state]             (0) {$0_H$};
+        \node[state, right=of 0] (2) {$1$};
+        \node[state, right=of 2] (1) {$0_S$};
+
+        \draw[every loop]
+            (0) edge[bend right, auto=right]  node {1} (2)
+            (2) edge[bend right, auto=right]  node {$\frac{1}{6}$} (0)
+            (1) edge[loop above] node {$\frac{1}{4}$} (1)
+            (2) edge[bend right, auto=right] node {$\frac{1}{4}$} (1)
+            (1) edge[bend right, auto=right] node {$\frac{3}{4}$} (2)
+            (2) edge[loop below] node {$\frac{7}{12}$} (2)
+            ;
+\end{tikzpicture}
+
+\subsubsection*{ b) }
+
+ergodic?
+\begin{itemize}
+\item  finite state space
+\item  irreducible because single communicating class
+\item  periodicity is same for all states in same class
+\end{itemize}
+$\rightarrow$ yes
+
+\subsubsection*{ c) }
+
+fraction working = $\pi_1$
+
+\begin{align*}
+\pi &= \pi \cdot P\\
+\sum_{i=1}^3 \pi_i &= 1\\
+P &= ((7/12,1/6,1/4),(1,0,0),(3/4,0,1/4))
+\end{align*}
+
+\begin{align*}
+\pi _{1}\cdot \frac{1}{6}&=\pi _{{0_{H}}}\\
+\pi _{1}&=6\cdot \pi _{{0_{H}}}\\
+\pi _{1}\cdot \frac{1}{4}&=\frac{3}{4}\pi _{{0_{S}}}\\
+\pi _{1}&=3\cdot \pi _{{0_{S}}}
+\end{align*}
+
+\begin{align*}
+1&=\pi _{1}+\pi _{{0_{H}}}+\pi _{{0_{S}}}\\
+1&=6\pi _{{0_{H}}}+\pi _{{0_{H}}}+2\pi _{{0_{H}}}
+\end{align*}
+
+\begin{align*}
+\pi &=\left(\pi _{1},\pi _{{0_{H}}},\pi _{{0_{S}}}\right)=\left(\frac{6}{9},\frac{1}{9},\frac{2}{9}\right)
+\end{align*}
+
+The data center is up $\frac{2}{3}$ of the time
+
+\subsubsection*{ d) }
+
+mean time between backhoe failures = mean time between visits to $\pi _{0_H}$
+\begin{align*}
+E[T_{0_H}] = \frac{1}{\pi_{0_H}} = 9
+\end{align*}
+
+\subsubsection*{ 3. }
+
+transition matrix P denotes the probabilities of following a link
+ rank = r
+
+
+$r_{{n+1}}=r_{n}\cdot P$\\
+$r_{0} \rightarrow$  solvable if $P$ is ergodic, because then the limiting distribution exists\\
+$n_{j}=$ nr of links on page i to j\\
+$N_{i}=$  nr links on page i\\
+$P_{{\left(i,j\right)}}=\frac{n_{j}}{N_{i}}$\\
+
+
+\subsubsection*{ a) }
+\begin{align*}
+P&=\left(\left(0,\frac{1}{2},0,\frac{1}{2}\right),\left(0,0,\frac{1}{2},\frac{1}{2}\right),\left(1,0,0,0\right),\left(0,0,0,1\right)\right)
+\end{align*}
+\subsubsection*{ c) }
+\begin{align*}
+\pi&=\pi\cdot P\\
+\pi_{1}+\pi_{2}+\pi_{3}+\pi_{4}&=1
+\end{align*}
+$\rightarrow$ $\pi=\left(0,0,0,1\right)$  is stationary distribution, if ergodic (see b) it is also limiting distribution.
+That $\pi=\left(0,0,0,1\right)$ is the stationary distribution makes intuitive sense, since once we arrive on webpage 4
+we can never leave it.
+
+\subsubsection*{ b) }
+
+ergodic?:\\
+irreducible? $\rightarrow$ no: there are 2 classes $\{4\},\{1,2,3\}$\\
+ergodicity is a sufficient but no necessary condition for the existence of a limiting distribution
+eventually you will get stuck in state of page 4 so limiting distribution = stationary distribution
+
+\subsubsection*{ d) }
+with teleportation
+\begin{align*}
+P' &=\left(\left(0,\frac{1}{2},0,\frac{1}{2}\right),\left(0,0,\frac{1}{2},\frac{1}{2}\right),\left(1,0,0,0\right),\left(\frac{1}{3},\frac{1}{3},\frac{1}{3},0\right)\right)
+\end{align*}
+\subsubsection*{ e) }
+
+now chain is irreducible, also aperiodic and the state space is finite $\rightarrow$ ergodic
+
+\subsubsection*{ f) }
+solve system of equations $\pi=\pi\cdot P'$ with  $\pi_{1}+\pi_{2}+\pi_{3}+\pi_{4}=1$\\
+$\rightarrow$ $\pi=\frac{1}{102}\left(30,24,21,27\right)$
+
+the limiting distribution defines final ranks for all pages
+
+\subsection*{ 4. }
+
+based on the edges of the CTMC we fill in the transition rate matrix Q that
+defines the CTMC:
+\begin{align*}
+Q&=\left(\left(x,1,0\right),\left(2,y,2\right),\left(4,3,z\right)\right)\\
+Q&=\left(\left(-1,1,0\right),\left(2,-4,2\right),\left(4,3,-7\right)\right)&& \text{-  rows have to sum to 0 -}
+\end{align*}
+
+We fill in the transition matrix $P$ for the corresponding DTMC, based on
+$p_{{ij}}=\frac{q_{{ij}}}{-q_{{ii}}}$
+
+\begin{align*}
+P&=\left(\left(0,1,0\right),\left(\frac{1}{2},0,\frac{1}{2}\right),\left(\frac{4}{7},\frac{3}{7},0\right)\right)
+\end{align*}
+
+\subsection*{ 5. }
+
+\subsubsection*{ a) }
+
+\begin{tikzpicture}
+        \node[state]             (0) {0};
+        \node[state, right=of 0] (1) {1};
+        \node[state, right=of 1] (2) {2};
+        \node[state, right=of 2] (3) {3};
+        \node[state, right=of 3] (4) {\ldots};
+        \node[state, right=of 4] (5) {$N$};
+
+        \draw[every loop]
+            (1) edge[bend right, auto=right] node {$\lambda$} (0)
+            (1) edge[bend right, auto=right]  node {$(N-1)\mu$} (2)
+            (2) edge[bend right, auto=right] node {$2 \lambda$} (1)
+            (2) edge[bend right, auto=right]  node {$(N-2)\mu$} (3)
+            (3) edge[bend right, auto=right] node {$3 \lambda$} (2)
+            (3) edge[bend right, auto=right]  node {$(N-3)\mu$} (4)
+            (4) edge[bend right, auto=right] node {$4 \lambda$} (3)
+            (4) edge[bend right, auto=right]  node {$\mu$} (5)
+            (5) edge[bend right, auto=right] node {$N\lambda$} (4)
+            ;
+\end{tikzpicture}
+
+
+\begin{itemize}
+\item  chain is a birth-death chain: the state transitions are of only two types: "births", which increase the state variable by one and "deaths", which decrease the state by one
+\item  $\left(N-1\right)\mu $ because data of $\left(N-1\right)$ drives has to be copied
+\item  $2\lambda $ because each of the drives can fail with rate $\lambda $ so we have to sum them
+\item the chain is not ergodic since it is reducible to state 0
+\end{itemize}
+
+\subsubsection*{ b) }
+
+limiting probability mass function $\rightarrow \left(1,0,0,\ldots ,0\right)$, in the long run you will
+end up in state 0 and you will not be able to get out since there are no outgoing links.
+
+\clearpage

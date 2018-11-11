@@ -1,0 +1,555 @@
+\section{Birth Death Queues}
+
+\subsection*{Preparatory Exercise}
+
+definition exponential series:  $$e^z = \sum_{k=0}^{\infty} \frac{z^k}{k!}$$
+
+\subsubsection*{1}
+
+\begin{align*}
+    z e^z &= z \sum_{k=0}^{\infty} \frac{z^k}{k!} \\
+    &= z \sum_{k=1}^{\infty} \frac{z^{k-1}}{(k-1)!}\\
+    &= \sum_{k=1}^{\infty} \frac{z^k}{(k-1)!} \\
+    &= \sum_{k=1}^{\infty} k\frac{z^k}{k!} \\
+    &= \sum_{k=0}^{\infty}{k\frac{z^k}{k!}} && \text{ - multiplication by zero adds nothing to sum - }
+\end{align*}
+
+\subsubsection*{2}
+
+\begin{align*}
+    (z + z^2) e^z &= z(z e^z+ e^z)\\
+    &= z \left( \sum_{k=0}^{\infty}{k\frac{z^k}{k!}} + \sum_{k=0}^{\infty} \frac{z^k}{k!}\right) && \text{ - use previous identities - }\\
+    &= z \left( \sum_{k=0}^{\infty}{k\frac{z^k}{k!}} + \sum_{k=1}^{\infty} \frac{z^{k-1}}{(k-1)!}\right) \\
+    &= z \left( \sum_{k=1}^{\infty}{(k-1)\frac{z^{k-1}}{(k-1)!}} + \sum_{k=1}^{\infty} \frac{z^{k-1}}{(k-1)!}\right) \\
+    &= z \sum_{k=1}^{\infty} k \frac{z^{k-1}}{(k-1)!} \\
+    &= \sum_{k=0}^{\infty} k^2 \frac{z^k}{k!} \\
+\end{align*}
+
+\clearpage
+
+\subsubsection*{3}
+
+if $z = 1$ we have division by zero so we assume $z \neq 1$:
+
+\begin{align*}
+    1-z^{n+1} &= (1 - z) \sum_{k=0}^{n} z^k \\
+    1-z^{n+1} &= (1 - z) \frac{1 - z^{n+1}}{1-z}  && \text{-http://mathworld.wolfram.com/GeometricSeries.html-}\\
+    1-z^{n+1} &= 1-z^{n+1}
+\end{align*}
+
+\subsubsection*{4}
+
+\begin{align*}
+\sum_{k=0}^{n} k z^k &= z \sum_{k=0}^{n} k z^{k-1}\\
+&= z \sum_{k=0}^{n} \frac{dz^k}{dz}\\
+&= \frac{z}{dz} d \left( \sum_{k=0}^{n} z^k \right)\\
+&= \frac{z}{dz} d \left(\frac{1 - z^{n+1}}{1-z}\right) && \text{-http://mathworld.wolfram.com/GeometricSeries.html-}\\
+&= z \frac{1-(n+1)z^n + n z^{n+1}}{(1-z)^2} && \text{- derivative of fraction + simplify -}
+\end{align*}
+
+The infinite series have region of convergence $|z| \leq 1$ and limits:
+$$ \lim_{n\to\infty} \sum_{k=0}^{n} z^k = \lim_{n\to\infty} \frac{1 - z^{n+1}}{1-z} = \frac{1}{1-z} $$
+$$ \lim_{n\to\infty} \sum_{k=0}^{n} k z^k = \lim_{n\to\infty} \frac{z(1-(n+1)z^n + n z^{n+1})}{(1-z)^2} = \frac{z}{1-z^2} $$
+
+\subsection*{ 1. }
+
+\subsubsection*{ a) }
+
+state space = $\mathbb{N}$, $S$ = system content.
+
+\begin{tikzpicture}
+        \node[state]             (0) {0};
+        \node[state, right=of 0] (1) {1};
+        \node[state, right=of 1] (2) {2};
+        \node[state, right=of 2] (3) {\ldots};
+        \node[state, right=of 3] (4) {\scriptsize{$T-1$}};
+        \node[state, right=of 4] (5) {$T$};
+        \node[state, right=of 5] (6) {\scriptsize{$T+1$}};
+        \node[state, right=of 6] (7) {\ldots};
+
+        \draw[every loop]
+            (0) edge[bend right, auto=right]  node {$\mu$} (1)
+            (1) edge[bend right, auto=right] node {$\lambda$} (0)
+            (1) edge[bend right, auto=right]  node {$\mu$} (2)
+            (2) edge[bend right, auto=right] node {$\lambda$} (1)
+            (2) edge[bend right, auto=right]  node {$\mu$} (3)
+            (3) edge[bend right, auto=right] node {$\lambda$} (2)
+            (3) edge[bend right, auto=right]  node {$\mu$} (4)
+            (4) edge[bend right, auto=right] node {$\lambda$} (3)
+            (4) edge[bend right, auto=right]  node {$\mu$} (5)
+            (5) edge[bend right, auto=right] node {$\mu$} (4)
+            (5) edge[bend right, auto=right]  node {$\lambda$} (6)
+            (6) edge[bend right, auto=right] node {$\mu$} (5)
+            (6) edge[bend right, auto=right]  node {$\lambda$} (7)
+            (7) edge[bend right, auto=right] node {$\mu$} (6)
+            ;
+\end{tikzpicture}
+
+\clearpage
+
+\subsubsection*{ b) }
+
+For which $\lambda ,\mu ,T$ is the Markov chain ergodic?
+\begin{itemize}
+\item chain is irreducible
+\item is the chain positive recurrent ? $\rightarrow$ solve for stationary distribution:
+\end{itemize}
+
+detailed balance equations:
+\begin{align*}
+\left(1\right)\mu s\left(0\right)&=\lambda s\left(1\right)\\
+\left(2\right)\mu s\left(n\right)&=\lambda s\left(n+1\right)&& \text{- n = 0,1, ..., T-2 -}\\
+\left(3\right)\mu s\left(T-1\right)&=\mu s\left(T\right)\\
+\left(4\right)\lambda s\left(n\right)&=\mu s\left(n+1\right)&& \text{- n = T+1, T+2... -}
+\end{align*}
+
+$\rho =\frac{\lambda }{\mu }$
+
+\begin{align*}
+\left(1\right)&\Rightarrow s\left(1\right)=\frac{\mu }{\lambda }s\left(0\right)=\frac{1}{\rho }s\left(0\right)\\
+\left(2\right)&\Rightarrow s\left(n+1\right)=\frac{\mu }{\lambda }s\left(n\right)=\frac{\mu }{\lambda }\cdot \frac{\mu }{\lambda }\cdot s\left(n-1\right)\\
+&=\ldots=\frac{1}{\rho ^{\left(n+1\right)}}\cdot s\left(0\right)&& \text{- n=0,1,...,T-2 -}\\
+\left(3\right)&\Rightarrow s\left(T\right)=s\left(T-1\right)=\frac{1}{\rho ^{\left(T-1\right)}}\cdot s\left(0\right)\\
+\left(4\right)&\Rightarrow s\left(n\right)=\frac{\lambda }{\mu }s\left(n-1\right)=\rho \cdot s\left(n-1\right) && \text{- n = T+1, T+2... -}\\
+&=\ldots=\rho ^{n-T}s\left(T\right)=\rho ^{\left(n+1-2T\right)}s\left(0\right)
+\end{align*}
+So:
+
+\begin{align*}
+s\left(n\right)&=\frac{1}{\rho ^{n}}s\left(0\right)&& \text{- n=0,1,...,T-2 -}\\
+s\left(T\right)&=s\left(T-1\right)=\frac{1}{\rho ^{\left(T-1\right)}}s\left(0\right)\\
+s\left(n\right)&=\rho ^{\left(n-2T+1\right)}s\left(0\right)&& \text{-  $n=T+1,\ldots$ -}\\
+1&=\sum_{{n=0}}^{\infty}s\left(n\right)=s\left(0\right)\cdot \left(\sum _{{n=0}}^{{T-1}}\frac{1}{\rho ^{n}}+\frac{1}{\rho ^{{T-1}}}+\sum _{{n=T+1}}^{\infty}\rho ^{{n-2T+1}}\right)\\
+&=s\left(0\right)\cdot \left(\frac{1-\left(\rho ^{{-1}}\right)^{T}}{1-\rho ^{{-1}}}+\frac{1}{\rho ^{{T-1}}}+\sum _{{n=T+1}}^{\infty}\rho ^{{n-2T+1}}\right) && \text{- $\sum_{k=0}^{n} z^k = \frac{1 - z^{n+1}}{1-z}$ -}\\
+&=s\left(0\right)\cdot \left(\frac{1-\left(\rho ^{{-1}}\right)^{T}}{1-\rho ^{{-1}}}+\sum _{{n=T}}^{\infty}\rho ^{{n-2T+1}}\right) && \text{- include $\frac{1}{\rho ^{{T-1}}}$ in summation -}\\
+&= s\left(0\right)\cdot \frac{1-\left(\rho ^{-1}\right)^T}{1-\rho ^{-1}} + \rho ^{{-T+1}}\cdot \frac{1}{1-\rho } && \text{- $\sum _{{n=T}}^{\infty} \rho ^{n}=\frac{\rho ^{T}}{1-\rho }$ -}
+\end{align*}
+
+$\Rightarrow s\left(0\right)=\frac{\rho ^{{T-1}}\left(1-\rho \right)}{1-\rho ^{T}}$
+
+Markov chain is ergodic when:\\
+\begin{itemize}
+\item To have s(0) positive, you need: $2-\rho ^{T}> 0 \Leftrightarrow \rho ^{T}< 2$
+\item T is finite
+\item $0< \rho < 1$
+\end{itemize}
+
+\subsubsection*{ c) }
+
+\begin{align*}
+E\left[N\right]&=\sum _{{n=0}}^{\infty}n\cdot s\left(n\right)\\
+&=\ldots\\
+&=\frac{\left(1-\rho \right)\left(2T-1\right)+\rho ^{T}}{\left(1-\rho \right)\left(2\cdot \rho ^{T}\right)}\\
+&=\frac{2T-1}{2\rho ^{T}}+\frac{\rho ^{T}}{\left(1-\rho \right)\left(2-\rho ^{T}\right)}
+\end{align*}
+
+\subsection*{ 2. }
+
+\subsubsection*{ a) }
+
+\begin{tikzpicture}
+        \node[state]             (0) {0};
+        \node[state, right=of 0] (1) {$1_1$};
+        \node[state, below=of 3] (2) {$1_2$};
+        \node[state, right=of 1] (3) {2};
+        \node[state, right=of 3] (4) {3};
+        \node[state, right=of 4] (5) {4};
+        \node[state, right=of 5] (6) {5};
+        \node[state, right=of 6] (7) {\ldots};
+
+        \draw[every loop]
+            (0) edge[bend right, auto=left]  node {$\lambda$} (1)
+            (1) edge[bend right, auto=right] node {$\mu_1$} (0)
+            (2) edge[bend left, auto=left]  node {$\mu_2$} (0)
+            (3) edge[bend right=50, auto=right]  node {$\mu_1$} (2)
+            (2) edge[bend left, auto=right] node {$\lambda$} (3)
+            (3) edge[bend right, auto=right]  node {$\mu_2$} (1)
+            (1) edge[bend right, auto=right] node {$\lambda$} (3)
+            (3) edge[bend right, auto=left]  node {$\lambda$} (4)
+            (4) edge[bend right, auto=right] node {$\mu_1 + \mu_2$} (3)
+            (4) edge[bend right, auto=right]  node {$\lambda$} (5)
+            (5) edge[bend right, auto=right] node {$\mu_1 + \mu_2$} (4)
+            (5) edge[bend right, auto=right]  node {$\lambda$} (6)
+            (6) edge[bend right, auto=right] node {$\mu_1 + \mu_2$} (5)
+            (6) edge[bend right, auto=right]  node {$\lambda$} (7)
+            (7) edge[bend right, auto=right] node {$\mu_1 + \mu_2$} (6)
+            ;
+\end{tikzpicture}
+
+\subsubsection*{ b) }
+
+irriducible $\rightarrow$ clear from state diagram\\
+\textbf{to prove}: stationary probability mass function\\
+local balance equations $\rightarrow$ combine states instead of writing down local ones state by state $\rightarrow$ is equivalent
+
+\begin{align*}
+\left(1\right)\lambda s\left(0\right)&=\mu _{1}s\left(1,1\right)+\mu _{2}s\left(1,2\right)\\
+\left(2\right)\lambda \cdot s\left(1,1\right)&=\mu _{2}s\left(2\right)+\mu _{1}\cdot s\left(1,2\right)\\
+\left(3\right)\left(\lambda +\mu _{2}\right)s\left(1,2\right)&=\mu _{1}s\left(2\right)\\
+\left(4\right)\lambda s\left(n\right)&=\left(\mu _{1}+\mu _{2}\right)s\left(n+1\right) \text{ - n=2,3,\ldots - }
+\end{align*}
+
+$\rho =\frac{\lambda }{\mu _{1}+\mu _{2}}$
+
+After some calculations:
+
+\begin{align*}
+s\left(1,1\right)&=\frac{\lambda \left(1+\rho \right)}{\mu _{1}\left(1+2\rho \right)}s\left(0\right)\\
+s\left(1,2\right)&=\frac{\lambda \cdot \rho }{\mu _{2}\cdot \left(1+2\rho \right)}s\left(0\right)\\
+s\left(n\right)&=\frac{\left(\lambda +\mu _{2}\right)\cdot \lambda }{\mu _{1}\cdot \mu _{2}}\cdot \frac{\rho ^{{n+1}}}{1+2\rho }s\left(0\right)\text{ - $n=2,3\ldots$ - }
+\end{align*}
+
+\begin{align*}
+s\left(1,1\right)+s\left(1,2\right)&=s\left(0\right)\cdot \frac{\lambda \left(\lambda +\mu _{2}\right)}{\mu _{1}\mu _{2}\left(1+2\rho \right)}
+\end{align*}
+\begin{align*}
+1&=\sum _{{n=0}}^{\infty}s\left(n\right)=s\left(0\right)\left(\ldots\right)
+\end{align*}
+
+\begin{align*}
+s\left(0\right)=\left(1+\left(\lambda \frac{\lambda +\mu _{2}}{\mu _{1}\mu _{2}\left(1+2\rho \right)\left(1-\rho \right)}\right)\right)^{{-1}}
+\end{align*}
+
+if $0< \rho < 1$ the markov chain is ergodic
+
+\subsubsection*{ c) }
+\begin{align*}
+E\left[N\right]&=\sum _{{n=0}}^{\infty }n\cdot s\left(n\right)\\
+&=\ldots \\
+&=\frac{1}{\frac{\mu _{1}\mu _{2}\left(1+2\rho \right)}{\lambda \left(\lambda +\mu _{2}\right)}+\frac{1}{1-\rho }}\\
+&=\frac{1}{0+\frac{1}{1-\rho }}\cdot \frac{1}{\left(1-\rho \right)^{2}}\\
+&=\frac{1-\rho }{\left(1-\rho \right)^{2}}\\
+&=\frac{1}{1-\rho }
+\end{align*}
+\subsubsection*{ d) }
+
+$\lambda < \mu _{1}+\mu _{2}$
+
+if $\mu _{2}< < \mu _{1}$, then $\rho \approx \frac{\lambda }{\mu _{1}}$, fill these params in in c) $\Rightarrow E\left[N\right]\approx \frac{1}{1-\rho }$\\
+For a M/M/1 with params $\left(\lambda ,\mu _{1}\right)$ -see syllabus- than we know $E\left[N\right]=\frac{\rho }{1-\rho }$ with $\rho =\frac{\lambda }{\mu _{1}}< 1$,\\
+this is smaller than before hence it is faster to use 1 server.
+
+Conclusion : if server 2 is much slower than server 1 you are better off without server 2\\
+better to let a customer wait a bit longer and then serve them quicker\\
+the mean waiting time will increase a bit but the mean sojourn time will decrease much more\\
+
+\subsection*{ 3. }
+
+\subsubsection*{ a) }
+
+\begin{tikzpicture}
+        \node[state]             (0) {0};
+        \node[state, right=of 0] (1) {1};
+        \node[state, right=of 1] (2) {2};
+        \node[state, right=of 2] (3) {3};
+        \node[state, right=of 3] (4) {\ldots};
+
+        \draw[every loop]
+            (0) edge[bend right, auto=right]  node {$\lambda$} (1)
+            (1) edge[bend right, auto=right] node {$\mu(1-\alpha)$} (0)
+            (1) edge[bend right, auto=right]  node {$\lambda$} (2)
+            (2) edge[bend right, auto=right]  node {$\mu(1-\alpha)$} (1)
+            (2) edge[bend right, auto=right] node {$\lambda$} (3)
+            (3) edge[bend right, auto=right]  node {$\mu(1-\alpha)$} (2)
+            (3) edge[bend right, auto=right] node {$\lambda$} (4)
+            (4) edge[bend right, auto=right]  node {$\mu(1-\alpha)$} (3)
+            ;
+\end{tikzpicture}
+
+The feedback can be simplified by setting the service rate to $\mu(1-\alpha)$,\\
+which results in a normal M/M/1 queue
+
+\subsubsection*{ b) }
+
+$s\left(0\right)$ ?
+
+\begin{align*}
+\lambda s\left(n-1\right)&=\mu \left(1-\alpha \right)s\left(n\right) && \text{- $n=1,2,\ldots$ -}\\
+s\left(n\right)&=\left(\frac{\lambda }{\mu \left(1-\alpha \right)}\right)^{n}s\left(0\right)\\
+s(n) &=\rho ^{n}s\left(0\right)&& \text{-  with $\rho =\frac{\lambda }{\mu \left(1-\alpha \right)}$ -}
+\end{align*}
+
+\begin{align*}
+1&=\sum _{{n=0}}^{\infty}s(n)\\
+&=s\left(0\right)\sum _{{n=0}}^{\infty}\rho ^{n}\\
+&=s\left(0\right)\frac{1}{1-\rho }&& \text{-  if $0< \rho < 1$ then ergodic -}\\
+s(0) &= 1 - \rho
+\end{align*}
+
+\subsubsection*{ c) }
+
+\begin{align*}
+E\left[N\right]&=\sum _{{n=0}}^{\infty}n\cdot s\left(n\right)\\
+&=\sum _{{n=1}}^{\infty}n\cdot \rho ^{n}\cdot \left(1-\rho \right) && \text{ - leave out multiplication by zero - }\\
+&=\frac{\rho }{1-\rho }
+\end{align*}
+
+\subsection*{ 4. }
+
+\subsubsection*{ a) }
+
+\begin{tikzpicture}
+        \node[state]             (0) {0};
+        \node[state, right=of 0] (1) {1};
+        \node[state, right=of 1] (2) {2};
+        \node[state, right=of 2] (3) {\ldots};
+        \node[state, right=of 3] (4) {N};
+
+        \draw[every loop]
+            (0) edge[bend right, auto=right]  node {$N \cdot \alpha$} (1)
+            (1) edge[bend right, auto=right] node {$\mu$} (0)
+            (1) edge[bend right, auto=right]  node {$(N-1)\alpha$} (2)
+            (2) edge[bend right, auto=right]  node {$\mu$} (1)
+            (2) edge[bend right, auto=right] node {$(N-2)\alpha$} (3)
+            (3) edge[bend right, auto=right]  node {$\mu$} (2)
+            (3) edge[bend right, auto=right] node {$\alpha$} (4)
+            (4) edge[bend right, auto=right]  node {$\mu$} (3)
+            ;
+\end{tikzpicture}
+
+\subsubsection*{ b) }
+
+$s\left(n\right)=Prob\left(N-n\right)$
+
+detailed balance equations:
+
+\begin{align*}
+\left(1\right)N\cdot \alpha \cdot s\left(0\right)&=\mu s\left(1\right)\\
+\left(2\right)\left(N-1\right)\cdot \alpha \cdot s\left(1\right)&=\mu s\left(2\right)\\
+\left(n\right)\left(N-n+1\right)\cdot \alpha \cdot s\left(n-1\right)&=\mu \cdot s\left(n\right)&& \text{- $n=1,2,\ldots,N$ -}
+\end{align*}
+
+$s\left(n\right)=c_{n}\cdot s\left(0\right)$
+
+\begin{align*}
+s\left(n\right)&=\frac{\left(N-\left(n-1\right)\right)}{\mu }\cdot \alpha \cdot s\left(n-1\right)\\
+&=\frac{\left(N-\left(n-1\right)\right)}{\mu }\cdot \frac{\left(N-\left(n-2\right)\right)}{\mu }\cdot \alpha \cdot \left(s\left(n-2\right)\right)\\
+&=\frac{\left(N-\left(n-1\right)\right)\cdot \alpha }{\mu }\cdot \ldots\cdot \frac{N\alpha }{\mu }\cdot s\left(0\right)\\
+&=\frac{N!}{\left(N-n\right)!}\cdot \left(\frac{\alpha }{\mu }\right)^{n}\cdot s\left(o\right)&& \text{-  $\forall n$ in $\mathbb{N}, \prod _{{i=1}}^{n}N-(n-i) = \frac{N!}{\left(N-n\right)!}$ -}
+\end{align*}
+
+\begin{align*}
+1&=\sum _{{n=0}}^{N}s\left(n\right)\\
+&=\left(\sum _{{n=0}}^{N}\frac{N!}{\left(N-n\right)!}\cdot \left(\frac{\alpha }{\mu }\right)^{n}\right)s\left(0\right)
+\end{align*}
+
+$\rightarrow$ $s\left(0\right)=\left(\sum _{{n=0}}^{N}\frac{N!}{\left(N-n\right)!}\cdot \left(\frac{\alpha }{\mu }\right)^{n}\right)^{{-1}}$
+
+\subsubsection*{ c) }
+
+$\left(Pr\left(\mu =n\right)=Pr\left(N-S=n\right)\right)=s\left(N-n\right)\forall n$ in $\{0,1,\ldots,N\}$
+
+$Pr\left(\mu =n\right)$ $\rightarrow$ prob n users are analyzing completed job ( preparing new job )
+
+$Pr\left(N-S=n\right)$ $\rightarrow$ prob N-n jobs are in the system
+
+\subsection*{ 5. }
+
+\begin{tikzpicture}
+        \node[state]             (0) {0};
+        \node[state, right=of 0] (1) {1};
+        \node[state, right=of 1] (2) {2};
+        \node[state, right=of 2] (3) {\ldots};
+        \node[state, right=of 3] (4) {\scriptsize{$K$}};
+
+        \draw[every loop]
+            (0) edge[bend right, auto=right]  node {$\lambda$} (1)
+            (1) edge[bend right, auto=right] node {$\mu$} (0)
+            (1) edge[bend right, auto=right]  node {$\lambda$} (2)
+            (2) edge[bend right, auto=right] node {$\mu$} (1)
+            (2) edge[bend right, auto=right]  node {$\lambda$} (3)
+            (3) edge[bend right, auto=right] node {$\mu$} (2)
+            (3) edge[bend right, auto=right]  node {$\lambda$} (4)
+            (4) edge[bend right, auto=right] node {$\mu$} (3)
+            ;
+\end{tikzpicture}
+
+\begin{align*}
+\lambda s\left(n-1\right)&=\mu s\left(n\right)&& \text{-  $n=1,2\ldots $ -}\\
+s\left(1\right)&=\rho s\left(0\right) && \text{-  $\rho =\frac{\lambda }{\mu }$ -}\\
+s\left(2\right)&=\rho ^{2}s\left(0\right)\\
+s\left(K\right)&=\rho ^{K}s\left(0\right)
+\end{align*}
+
+\begin{align*}
+1&=\sum _{{n=0}}^{K}s\left(n\right)\\
+&= s(0) \cdot \sum_{{n=0}}^{K} \rho^n\\
+&= s(0) \frac{1-\rho ^{{K+1}}}{1-\rho }
+\end{align*}
+
+\begin{align*}
+s(K)&= \rho ^{K}\frac{1-\rho }{1-\rho ^{{K+1}}}
+\end{align*}
+
+\subsubsection*{ a) }
+
+Assume $\rho=0.4$.
+Doubling the service rate (using $\mu' = 2 \mu$) results in a halving of the load:
+\[
+\rho' = \frac{\lambda}{2 \mu} = \frac{\rho}{2}.
+\]
+The requested loss probabilities are summarized in the following table:
+\begin{table}[H]
+\centering
+\begin{tabular}{ccc}
+$\rho$  & $K$   & $p_{\text{loss}}$ \\ \hline
+0.4     & 5     & $6 \cdot 10^{-3}$ \\
+0.2     & 5     & $3 \cdot 10^{-4}$ \\
+0.4     & 10    & $6 \cdot 10^{-5}$
+\end{tabular}
+\end{table}
+Doubling the system capacity has a greater (positive) effect on the loss probability.
+
+\subsubsection*{ b) }
+
+Assume $\rho=0.8$.
+The requested loss probabilities are summarised in the following table:
+\begin{table}[H]
+\centering
+\begin{tabular}{ccc}
+$\rho$  & $K$   & $p_{\text{loss}}$ \\ \hline
+0.8     & 5     & $9 \cdot 10^{-2}$ \\
+0.4     & 5     & $6 \cdot 10^{-3}$ \\
+0.8     & 10    & $2 \cdot 10^{-2}$
+\end{tabular}
+\end{table}
+Doubling the service rate has a greater (positive) effect on the loss probability.
+
+\subsubsection*{ c) }
+The intuitive solution would be to increase the system capacity.
+If the load is high, then the system will be at full capacity for a large proportion of the time, even if the system has a high capacity.
+
+\subsection*{ 6. }
+
+\subsubsection*{ a) }
+
+\begin{tikzpicture}
+        \node[state]             (0) {0};
+        \node[state, right=of 0] (1) {1};
+        \node[state, right=of 1] (2) {2};
+        \node[state, right=of 2] (3) {3};
+
+        \draw[every loop]
+            (0) edge[bend right, auto=right]  node {$\lambda$} (1)
+            (1) edge[bend right, auto=right] node {$\lambda$} (0)
+            (1) edge[bend right, auto=right]  node {$\lambda$} (2)
+            (2) edge[bend right, auto=right]  node {$2\lambda$} (1)
+            (2) edge[bend right, auto=right] node {$\lambda$} (3)
+            (3) edge[bend right, auto=right]  node {$2\lambda$} (2)
+            ;
+\end{tikzpicture}
+
+$2 \lambda$ because once there are two tasks two servers can work on it.
+
+\subsubsection*{ b) }
+
+two costumers $\rightarrow s=2$\\
+$T_a \sim Exp(|\lambda), T_d \sim Exp( | 2 \cdot \lambda)$
+
+\begin{align*}
+Pr\left(\text{arrival before departure}\right)&=Pr\left[T_{a}< T_{d}\right]\\
+&=\int _{0}^{\infty }Pr\left(t< T_{d}\right)f_{a}\left(t\right)dt\\
+&=\int _{0}^{\infty }(1-F_{T_d}(t))f_{a}\left(t\right)dt\\
+&=\int _{0}^{\infty }e^{{-2\lambda t}}\lambda e^{{-\lambda t}}dt&& \text{-  see table 1, A1.11 -}\\
+&=\int _{0}^{\infty }\lambda \cdot e^{{-3\lambda t}}dt\\
+&=\lambda \cdot \int _{0}^{\infty }e^{{-3\lambda t}}dt\\
+&=\lambda \cdot \left[\frac{e^{{-3\lambda t}}}{-3\lambda }\right]_{0}^{\infty}\\
+&=\lambda \cdot\left [0-\frac{1}{-3 \cdot \lambda}\right]\\
+&=\frac{1}{3}
+\end{align*}
+
+\subsubsection*{ c) }
+
+$s\left(n\right)=\lim_{{t\rightarrow \infty}}Pr\left[x_{t}=n\right]$  $n=0,1,2,3,\ldots$
+
+detailed balance equations:
+
+\begin{align*}
+\left(1\right)\lambda s\left(0\right)&=\lambda s\left(1\right)\Rightarrow s\left(1\right)=s\left(0\right)\\
+\left(2\right)\lambda s\left(1\right)&=2\lambda s\left(2\right)\Rightarrow s\left(2\right)=\frac{1}{2}s\left(1\right)=\frac{1}{2}s\left(0\right)\\
+\left(3\right)\lambda s\left(2\right)&=2\lambda s\left(3\right)\Rightarrow s\left(3\right)=\frac{1}{2}s\left(2\right)=\frac{1}{2}\cdot \frac{1}{2}\cdot s\left(0\right)
+\end{align*}
+
+$1=s\left(0\right)\left(1+1+\frac{1}{2}+\frac{1}{4}\right)=\frac{11}{4}$
+
+\begin{align*}
+s\left(0\right)&=\frac{4}{11}\\
+s\left(1\right)&=\frac{4}{11}\\
+s\left(2\right)&=\frac{2}{11}\\
+s\left(3\right)&=\frac{1}{11}
+\end{align*}
+
+
+\subsubsection*{ d) }
+
+$E\left[S\right]=\sum _{{n=0}}^{3}n\cdot s\left(n\right)=1$
+
+$0\cdot \frac{4}{11}+1\cdot \frac{4}{11}+2\cdot \frac{2}{11}+3\cdot \frac{1}{11}$
+
+\subsubsection*{ e) }
+
+probability of loss = prob arrival in state 3, there is no state 4, hence the customer will be lost:\\
+$p_{loss}=s\left(3\right)=\frac{1}{11}$ (PASTA)
+
+\subsubsection*{ f) }
+
+\begin{align*}
+\mu _{1}&=\lambda \\
+\mu _{2}&=\mu _{3}=2\cdot \lambda 
+\end{align*}
+
+\begin{align*}
+\mu _{{eff}}&=\sum _{{n=1}}^{3}s\left(n\right)\mu _{n}\\
+&=\frac{10}{11}\lambda && \text{-  nr of leaving customers per second -}
+\end{align*}
+
+$\rightarrow$ $\frac{10}{11}\lambda \left[s^{{-1}}\right]=\left(1-p_{loss}\right)\cdot \lambda =\frac{10}{11}\lambda $
+
+$\rightarrow$ $\mu _{eff}=\left(1-p_{loss}\right)\cdot \lambda =\lambda _{eff}$\\
+this should always be the case: states system is in equilibrium:
+at every time instant\\
+nr incoming customers = nr outgoing customers
+
+\subsubsection*{ g) }
+
+An effective arrival occurs when a new customer arrives and the system is not full.
+    The distribution of the number of customers in the system at an effective arrival is
+    \[
+        Pr[S_{A,eff} = n] = Pr[S_A = n | S_A < 3]
+    \]
+    where $S_{A,\text{eff}}$ is the system content at an effective arrival and $S_A$ is the system content at an arrival.
+    From the PASTA (Poisson Arrivals See Time Averages) property and the ergodicity of the CTMC, it follows that $S_A = S$.
+    Therefore
+    \begin{align*}
+        Pr[S_{A,eff} = n]
+        &= Pr[S = n | S < 3]\\
+        &= \frac{Pr[S = n, S < 3]}{Pr[S < 3]}\\
+        &= \frac{Pr[S = n, S < 3]}{\frac{10}{11}}\\
+    \end{align*}
+    $s(n) = Pr[S = n, S < 3] \rightarrow s(n)$ is already calculated with $S < 3$\\
+    which yields $Pr[S_{A,eff} = 0] = \dfrac{\dfrac{4}{11}}{\dfrac{10}{11}} = \frac{2}{5}$, $Pr[S_{A,eff} = 1] = \frac{2}{5}$ and $Pr[S_{A,eff] = 2} = \frac{1}{5}$.
+
+
+\subsubsection*{ h) }
+
+The rate of a Poisson process is constant, and knowing when the previous Poisson event has happened
+is irrelevant for the occurrence of the next Poisson event.
+In this case, this means that the effective arrival rate $\lambda_{eff}$ should be equal
+to the effective arrival rate $\lambda_{a}$ right after an arrival.
+By definition,
+    \[
+        \lambda_{eff}
+        = ( 1 - s(3) ) \lambda = ( 1 - p_{\text{loss}}) \lambda = \frac{10}{11} \lambda.
+    \]
+    The effective arrival rate $\lambda_a$ right after an arrival can be calculated similarly, but now the loss probability is different.
+    The probability mass function of the system content $S_a$ right after an effective arrival is computed from the relation
+    \[
+        Pr[S_a = n] = Pr[S = n | S > 0] = \frac{s(n)}{1 - s(0)},
+    \]
+    if $n$ is equal to 1, 2 or 3.
+    We find
+    \[
+        \lambda_a = \frac{s(1) + s(2)}{1 - s(0)} \lambda = \frac{6}{7} \lambda.
+    \]
+    As $\lambda_{eff} \neq \lambda_a$, the effective arrival process is not a Poisson process.
+

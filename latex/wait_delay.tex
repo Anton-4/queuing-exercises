@@ -1,0 +1,314 @@
+\section{waiting times and delay}
+
+\subsection*{ 1. }
+
+\subsubsection*{ a) }
+
+\textbf{used formulas}
+
+stationary distribution M/M/1: $s_{{\rho \left(n\right)}}=\left(1-\rho \right)\cdot \rho ^{n}$
+
+\textbf{solution}
+
+\begin{align*}
+Pr\left[S_{{\rho }}\le n\right] \text{ - $n \in \mathbb{N}$ - }
+=\sum _{{i=0}}^{n}Pr\left(S_{{\rho }}=i\right)
+\end{align*}
+
+stationary distribution for M/M/1:
+$s_{{\rho \left(n\right)}}=\left(1-\rho \right)\cdot \rho ^{n}$
+
+\begin{align*}
+Pr\left(S_{\rho }\le n\right)&=\sum _{{k=0}}^{n}Pr\left(S_{\rho }=k\right)\\
+&=\sum _{{k=0}}^{n} s_{\rho }(k)\\
+&=\left(1-\rho \right)\sum _{{k=0}}^{n}\rho ^{k}\\
+&=\left(1-\rho \right)\frac{1-\rho ^{\left(n+1\right)}}{1-\rho }\\
+&=1-\rho ^{{n+1}}
+\end{align*}
+
+$\forall x \in \mathbb{R}:Pr\left(S_{\rho }\le x\right)=1-\rho ^{{\lfloor x\rfloor+1}}$
+
+\subsubsection*{ b) }
+
+\textbf{used formulas}
+
+Hopital:
+\begin{align*}
+\text{if } \lim _{{x\rightarrow a}}f\left(x\right)&=\lim _{{x\rightarrow a}}g\left(x\right)=0 \text{ or } \pm\infty \\
+\lim _{{x\rightarrow a}}\frac{f\left(x\right)}{g\left(x\right)}&=\lim _{{x\rightarrow a}}\frac{f' \left(x\right)}{g' \left(x\right)}
+\end{align*}
+
+\textbf{solution}
+
+\begin{align*}
+Pr\left[\left(1-\rho \right)S_{\rho }\le x\right]&=Pr\left[S_{\rho }\le \frac{x}{1-\rho }\right]\\
+&=1-\rho ^{{\frac{x}{\lfloor1-\rho \rfloor}+1}} && \text{ - fill in from a) -}
+\end{align*}
+\begin{align*}
+1-\rho ^{{\frac{x}{1-\rho }}}\le 1-\rho ^{{\frac{x}{\lfloor1-\rho \rfloor}+1}}\le 1-\rho ^{{\frac{x}{1-\rho }+1}}
+\end{align*}
+solve limit from both sides, side one:
+\begin{align*}
+\lim_{{\rho \rightarrow 1}}\rho ^{{\frac{x}{1-\rho }}}&=\lim_{{\rho \rightarrow 1}}\exp\left(\ln\left(\rho^{\frac{x}{1-\rho }} \right)\right) &&
+\text{$f(x)=e^{ln(f(x))}$}\\
+&= \lim_{{\rho \rightarrow 1}}\exp\left(\frac{x}{1-\rho }\ln\left(\rho \right)\right) && \text{ - log power rule - }\\
+&= \exp\left(\lim_{{\rho \rightarrow 1}}\frac{x}{1-\rho }\ln\left(\rho \right)\right) && \text{ - pass limit through exponential - }\\
+&= \exp\left(x \cdot \lim_{{\rho \rightarrow 1}}\frac{ln(\rho)}{1-\rho }\right) && \text{ - factor out constant x - }\\
+&=\exp\left(x \cdot \lim_{{\rho \rightarrow 1}}\left(\frac{\frac{1}{\rho }}{-1}\right)\right) && \text{ - hopital - }\\
+&=\exp\left(x \cdot \lim_{{\rho \rightarrow 1}}\left(\frac{\rho }{-1}\right)\right)\\
+&=\exp\left(-x\right)
+\end{align*}
+side two:
+\begin{align*}
+&=\lim_{{\rho \rightarrow 1}} \rho ^{{\frac{x}{1-\rho }+1}}\\
+&=\exp\left(-x\right)
+\end{align*}
+
+combine boths sides $\rightarrow$ $\lim_{{\rho \rightarrow 1}}\left(1-\rho ^{{\frac{x}{\lfloor1-\rho \rfloor}+1}}\right)=1-\exp\left(-x\right)$
+
+$\rightarrow$ When $\rho $ goes to 1, this distribution is converging to an exponential
+distribution with $\lambda = 1$
+
+\subsection*{ 2. }
+
+\begin{tikzpicture}
+        \node[state]             (0) {0};
+        \node[state, right=of 0] (1) {1};
+        \node[state, right=of 1] (2) {2};
+        \node[state, right=of 2] (3) {\ldots};
+
+        \draw[every loop]
+            (0) edge[bend right, auto=right]  node {$\lambda$} (1)
+            (1) edge[bend right, auto=right] node {$\mu$} (0)
+            (1) edge[bend right, auto=right]  node {$\frac{\lambda}{2}$} (2)
+            (2) edge[bend right, auto=right]  node {$\mu$} (1)
+            (2) edge[bend right, auto=right] node {$\frac{\lambda}{3}$} (3)
+            (3) edge[bend right, auto=right]  node {$\mu$} (2)
+            ;
+\end{tikzpicture}
+
+\subsubsection*{ a) }
+
+$\lambda _{n}=$arrival rate when n customers in the system\\
+$\mu _{n}=$service rate when n customers in the system
+
+balance equations:
+
+$s\left(n\right)\cdot \lambda _{n}=s\left(n+1\right)\mu _{{n+1}}$
+
+Normalization condition:
+
+$\sum _{{n=0}}^{\infty }s\left(n\right)=1$
+
+\begin{align*}
+\lambda _{n}&=\frac{\lambda }{n+1} && \text{ - $\forall n\in \mathbb{N}$ - }\\
+\mu _{n }&=\mu && \text{ - $\forall n\in \mathbb{N}$ - }
+\end{align*}
+
+\textbf{Balance equations:}
+\begin{align*}
+s\left(n+1\right)&=s\left(n\right)\cdot \frac{\lambda }{\left(n+1\right)\mu }\\
+&=s\left(n-1\right)\cdot \frac{\lambda }{n\mu }\cdot \frac{\lambda }{\left(n+1\right)\mu }\\
+&=s\left(0\right)\cdot \left(\frac{\lambda }{\mu }\right)^{{n+1}}\cdot \frac{1}{\left(n+1\right)!}
+\end{align*}
+
+\begin{align*}
+\sum _{{n=0}}^{\infty }s\left(n\right)&=1\\
+s\left(0\right)\cdot \sum _{{n=0}}^{\infty }\left(\frac{\lambda }{\mu }\right)^{n}\cdot \frac{1}{n!} &= 1\\
+s\left(0\right)&=\exp \left(-\frac{\lambda }{\mu }\right) && \text{- def exp series:  $e^z = \sum_{k=0}^{\infty} \frac{z^k}{k!}$ - }
+\end{align*}
+\begin{align*}
+s\left(n\right)&=e^{{-\frac{\lambda }{\mu }}}\left(\frac{\lambda }{\mu }\right)^{n}\frac{1}{n!} && \text{ - $n\in \mathbb{N}$ - }
+\end{align*}
+
+\subsubsection*{ b) }
+
+\textbf{used formulas}
+
+definition laplace transform = 
+\begin{align*}
+\mathcal{L}\{f(t)\} &= \int_0^{\infty} e^{- s t} f(t) dt && \text{- with s a complex var - }\\
+&= E[e^{- s W}]
+\end{align*}
+
+\begin{align*}
+\hat{s}(n): \text{distr after departure}\\
+\widetilde{s}(n): \text{distr before departure}\\
+\widetilde{s}(n+1) = \hat{s}(n)\\
+\end{align*}
+
+\textbf{solution}
+
+We use a different approach then usual, because $\lambda$ is not fixed,\\
+hence PASTA does not apply and so $S_A = S$ does not apply.\\
+We use a more broadly applicable approach here\\
+
+\begin{align*}
+D^{\ast }\left(s\right) &= \text{laplace transform of the delay of a customer}\\
+&=E\left[e^{{-s\cdot W}}\right]\\
+&=\sum _{n}E\left[e^{{-sW}}|S^{A}=n\right]\cdot \hat{s}\left(n\right)
+\end{align*}
+\begin{align*}
+\hat{s}\left(n\right)&=\widetilde{s}\left(n+1\right) \text{ - distr seen by someone just before departure - }\\
+\widetilde{s}\left(n\right)&=\frac{s\left(n\right)}{1-s\left(0\right)} \text{ You can't have a departure when the system content is 0.}
+\end{align*}
+
+\begin{align*}
+\hat{s}\left(n\right)&=\widetilde{s}\left(n+1\right)\\
+&=\frac{s\left(n+1\right)}{1-s\left(0\right)} && \text{ - see earlier result - }\\
+&=\frac{e^{{-\frac{\lambda }{\mu }}}\left(\frac{\lambda }{\mu }\right)^{{n+1}}\frac{1}{\left(n+1\right)!}}{1-e^{{-\frac{\lambda }{\mu }}}} && \text{ - fill in from a) -}
+\end{align*}
+
+$E\left[e^{{-sW}}|S^{A}=n\right]=\left(\frac{\mu }{\mu +s}\right)^{{n+1}}$ see formula p 3.11
+
+\begin{align*}
+D^{\ast }\left(s\right) &= \sum _{n}E\left[e^{{-sW}}|S^{A}=n\right]\cdot \hat{s}\left(n\right)\\
+&=\sum _{{n=0}}^{\infty }\left(\frac{\mu }{\mu +s}\right)^{{n+1}}\cdot \frac{e^{{-\frac{\lambda }{\mu }}}\left(\frac{\lambda }{\mu }\right)^{{n+1}}\frac{1}{\left(n+1\right)!}}{1-e^{{-\frac{\lambda }{\mu }}}}\\
+&=\frac{e^{{-\frac{\lambda }{\mu }}}}{1-e^{{-\frac{\lambda }{\mu }}}}\cdot \sum _{{n=0}}^{\infty }\left(\frac{\mu }{\mu +s}\right)^{{n+1}}\left(\frac{\lambda }{\mu }\right)^{{n+1}}\frac{1}{\left(n+1\right)!}\\
+&=\frac{e^{{-\frac{\lambda }{\mu }}}}{1-e^{{-\frac{\lambda }{\mu }}}}\cdot \sum _{{n=1}}^{\infty }\left(\frac{\lambda }{\mu +s}\right)^{{n}}\frac{1}{n!}\\
+&=\frac{e^{{-\frac{\lambda }{\mu }}}}{1-e^{{-\frac{\lambda }{\mu }}}} \cdot e^{{\frac{\lambda }{\mu +s}}}-1&& \text{-   $e^{{z}}=\sum _{{k=0}}^{\infty }\frac{z^{{k}}}{k!}$ -}\\
+&=\frac{e^{\left(\frac{\lambda }{\mu +s}\right)}-1}{e^{{\frac{\lambda }{\mu }}}-1}
+\end{align*}
+
+\subsubsection*{ c) }
+
+TODO expand
+
+Little's law: $E\left[S\right]=\lambda _{{eff}}\cdot E\left[D\right]$
+
+$E\left[S\right]=\frac{\lambda }{\mu }$
+\begin{align*}
+\lambda _{{eff}}&=\sum _{{n=0}}^{\infty }\lambda _{n}\cdot s\left(n\right) && \text{ - $\lambda_{eff}$ for any queue with infinite capacity -}\\
+&=\mu \cdot \left(1-e^{{-\frac{\lambda }{\mu }}}\right) && \text{- ? -}
+\end{align*}
+
+\begin{align*}
+E\left[D\right]&=-D^{\ast'}\left(0\right)\\
+&=\frac{\lambda }{\left(1-e^{{-\frac{\lambda }{\mu }}}\right)\cdot \mu ^{2}}
+\end{align*}
+
+\begin{align*}
+\frac{d \frac{\lambda }{\mu +s}}{ds}=-\frac{\lambda }{\left(\mu +s\right)^{2}}
+\end{align*}
+
+\begin{align*}
+D^{\ast'}\left(s\right)&=\frac{1}{e^{{\frac{\lambda }{\mu }}}-1}\cdot e^{{\frac{\lambda }{\mu +s}}}\cdot \frac{-\lambda }{\left(\mu +s\right)^{2}}\\
+&=\frac{\lambda \cdot e^{{\frac{\lambda }{\mu +s}}}}{\left(1-e^{{\frac{\lambda }{\mu }}}\right)\left(\mu +s\right)^{2}}
+\end{align*}
+
+\begin{align*}
+-D^{\ast'}\left(0\right)&=-\frac{\lambda \cdot e^{{\frac{\lambda }{\mu }}}}{\left(1-e^{{\frac{\lambda }{\mu }}}\right)\cdot \mu ^{2}}\\
+&=\frac{\mu \cdot e^{{\frac{\lambda }{\mu }}}}{e^{{\frac{\lambda }{\mu }}}\cdot \left(e^{{-\frac{\lambda }{\mu }}}+1\right)\cdot \mu ^{2}}
+\end{align*}
+
+\begin{align*}
+\lambda_{{eff}}\cdot E\left[D\right]&=\mu \cdot \left(1-e^{{-\frac{\lambda }{\mu }}}\right)\cdot \frac{\lambda }{1-e^{{-\frac{\lambda }{\mu }}}\cdot \mu ^{2}}\\
+&=\frac{\lambda }{\mu }\\
+&=E\left[S\right]
+\end{align*}
+
+\subsection*{ 3. }
+
+$S\left(t\right)= $ nr of customers in the queue at time $t$
+
+\begin{align*}
+\bar{S}&=\frac{1}{T}\int _{0}^{T}S\left(t\right)dt\\
+&=\frac{1}{T} \int _{0}^{T} \sum _{{k=1}}^{K}I_{k}\left(t\right) dt && \text{ - p3.7 - }\\
+&=\frac{1}{T}\sum _{{k=1}}^{K}\int _{0}^{T}I_{k}\left(t\right)dt && \text{ - switch sum and integral - }\\
+&=\frac{1}{T}\sum _{{k=1}}^{K}D_{k} && \text{ - p3.8 - }\\
+&=K\cdot \frac{1}{T}\cdot \frac{1}{K}\sum _{{k=1}}^{K}D_{k} && \text{ - split 1 into $K \cdot \frac{1}{K}$ -}\\
+&= \lambda \cdot \bar{D} && \text{ - see question - }
+\end{align*}
+
+\subsection*{ 4. }
+
+$\lambda _{h}=$ high priority Poisson arrival rate\\
+$\lambda _{l}=$ low priority Poisson arrival rate\\
+$\mu =$ service times rate
+
+\subsubsection*{ a) }
+
+Merging of Poisson arrivals:
+$\lambda =\lambda _{h}+\lambda _{l}$
+
+M/M/1 so $s\left(n\right)=\left(1-\rho \right)\rho ^{n}$ where $\rho =\frac{\lambda }{\mu }=\frac{\lambda _{h}+\lambda _{l}}{\mu }$
+
+\subsubsection*{ b) }
+
+because HP arrivals are either immediately served or enter HP queue we can basically ignore the LP customers for this distribution:\\
+$s_{h}\left(n\right)=\left(1-\rho _{h}\right)\cdot \rho _{h}^{n}$ where $\rho _{h}=\frac{\lambda _{h}}{\mu }$
+
+\subsubsection*{ c) }
+\begin{align*}
+E\left[S\right]&=\frac{\rho }{1-\rho } && \text{ - always for M/M/1 - }\\
+E\left[S_{h}\right]&=\frac{\rho _{h}}{1-\rho _{h}}
+\end{align*}
+\begin{align*}
+E\left[S_{l}\right]&=E\left[S\right]-E\left[S_{h}\right]\\
+&=\frac{\rho }{1-\rho }-\frac{\rho _{h}}{1-\rho _{h}}\\
+&=\frac{\rho -\rho _{h} + (\rho \rho_h - \rho \rho_h)}{\left(1-\rho \right)\left(1-\rho _{h}\right)}\\
+&=\frac{\rho -\rho _{h}}{\left(1-\rho \right)\left(1-\rho _{h}\right)}\\
+&=\frac{\frac{\lambda _{h}+\lambda _{l}}{\mu }-\frac{\lambda _{h}}{\mu }}{\left(1-\rho \right)\left(1-\rho _{h}\right)}\\
+&=\frac{\frac{\lambda _{l}}{\mu }}{\left(1-\rho \right)\left(1-\rho _{h}\right)}
+\end{align*}
+\begin{align*}
+E\left[D\right]&=\frac{E\left[S\right]}{\lambda } && \text{Little's law}
+\end{align*}
+\begin{align*}
+E\left[D_{h}\right]&=\frac{E\left[S_{h}\right]}{\lambda _{h}}\\
+&=\frac{\frac{\lambda _{h}}{\mu }}{\lambda _{h}\left(1-\frac{\lambda _{h}}{\mu }\right)}\\
+&=\frac{1}{\mu -\lambda _{h}}
+\end{align*}
+
+\begin{align*}
+E\left[D_{l}\right]&=\frac{E\left[S_{l}\right]}{\lambda _{h}}\\
+&=\frac{\lambda _{l}}{\mu \left(1-\rho \right)\left(1-\rho _{h}\right)\lambda _{l}}\\
+&=\frac{1}{\left(1-\rho \right)\left(\mu -\mu \cdot \frac{\lambda _{h}}{\mu }\right)}\\
+&=\frac{1}{\left(1-\rho \right)\left(\mu -\lambda _{h}\right)}
+\end{align*}
+
+\subsection*{ 5. }
+
+For M/M/1:
+\begin{align*}
+E\left[e^{{-sW}}\right]&=D^{{*\left(s\right)}}\\
+&=\frac{\mu -\lambda }{\mu -\lambda +s}
+\end{align*}
+
+\subsubsection*{ a) }
+
+LST of $\left(1-\rho \right)D_{\rho }$:
+
+\begin{align*}
+E\left[e^{{-s\cdot \left(1-\rho \right)D_{\rho }}}\right]&=E\left[e^{{-\left(s\cdot \left(1-\rho \right)\right)D_{\rho }}}\right]\\
+&=D^{\ast \left(\left(1-\rho \right)s\right)}&& \text{-  $E\left[e^{{-sW}}\right]=D^{{*\left(s\right)}}$ -}\\
+&=\frac{\mu -\lambda }{\mu -\lambda +\left(1-\rho \right)s}\\
+&=\frac{\mu -\lambda }{\frac{\left(\mu -\lambda \right)\left(\mu +s\right)}{\mu }}\\
+&=\frac{(\mu -\lambda) \mu }{\left(\mu -\lambda \right)\left(\mu +s\right)}\\
+&=\frac{\mu }{\mu +s}\\
+\end{align*}
+
+\subsubsection*{ b) }
+
+TODO expand
+
+$\rho $ $\rightarrow$ 1
+
+The limit is $\frac{\mu }{\mu +s}$( see a) ) or $\frac{\lambda }{\lambda +s}$ since for $\rho \rightarrow 1, \lambda \rightarrow \mu$
+
+\textbf{discuss result}
+
+The delay $\left(1-\rho \right)D_{\rho }\sim \exp \left(\mu \right)$ (given),
+$D_{\rho }\sim \exp \left(\frac{\mu }{1-\rho }\right)$
+
+\begin{align*}
+Pr\left[\left(1-\rho \right)D_{\rho }< t\right]&=1-e^{{-\mu \cdot t}}\\
+Pr\left[\frac{\left(1-\rho \right)D_{\rho }}{1-\rho }< \frac{t}{1-\rho }\right]&=1-e^{{-\mu \cdot t}}\\
+Pr\left[D_{\rho }< \frac{t}{1-\rho }\right]&=1-e^{{-\mu \cdot t}}\\
+&=1-e^{{-\left(1-\rho \right)\mu \cdot \frac{t}{1-\rho }}} && \text{ - split 1 -}
+\end{align*}
+
+$\rightarrow$ $Pr\left[D_{\rho }< y\right]=1-e^{{-\left(1-\rho \right)\mu \cdot y}}$
+$\rightarrow$ $D_{\rho }\sim \exp \left(\left(1-\rho \right)\mu \right)$
+
+\clearpage
