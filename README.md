@@ -1,5 +1,3 @@
-Solutions to the exercises for the course "Queuing Theory and Simulation" given at Ghent University
-
 I found that the solutions written down in class often missed steps, important details and
 explanations, which is why I have created this document with detailed, annotated and complete
 solutions for most exercises.
